@@ -64,6 +64,68 @@ export const BackgroundBeamsWithCollision = ({
       delay: 2,
       className: "h-6",
     },
+    {
+      initialX: 300,
+      translateX: 300,
+      duration: 5,
+      repeatDelay: 5,
+      delay: 1,
+      className: "h-8",
+    },
+    {
+      initialX: 700,
+      translateX: 700,
+      duration: 8,
+      repeatDelay: 3,
+      delay: 3,
+      className: "h-10",
+    },
+    {
+      initialX: 900,
+      translateX: 900,
+      duration: 6,
+      repeatDelay: 4,
+      delay: 1,
+    },
+    {
+      initialX: 1400,
+      translateX: 1400,
+      duration: 7,
+      repeatDelay: 3,
+      delay: 2,
+      className: "h-10",
+    },
+    {
+      initialX: 1600,
+      translateX: 1600,
+      duration: 5,
+      repeatDelay: 6,
+      delay: 1,
+      className: "h-8",
+    },
+    {
+      initialX: 1800,
+      translateX: 1800,
+      duration: 6,
+      repeatDelay: 4,
+      delay: 3,
+      className: "h-12",
+    },
+    {
+      initialX: 1500,
+      translateX: 1500,
+      duration: 8,
+      repeatDelay: 2,
+      delay: 4,
+    },
+    {
+      initialX: 1700,
+      translateX: 1700,
+      duration: 4,
+      repeatDelay: 5,
+      delay: 2,
+      className: "h-6",
+    },
   ];
 
   return (
@@ -224,22 +286,22 @@ const CollisionMechanism = React.forwardRef<
 CollisionMechanism.displayName = "CollisionMechanism";
 
 const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
-  const spans = Array.from({ length: 20 }, (_, index) => ({
+  const spans = Array.from({ length: 35 }, (_, index) => ({
     id: index,
     initialX: 0,
     initialY: 0,
-    directionX: Math.floor(Math.random() * 80 - 40),
-    directionY: Math.floor(Math.random() * -50 - 10),
+    directionX: Math.floor(Math.random() * 100 - 50),
+    directionY: Math.floor(Math.random() * -60 - 10),
   }));
 
   return (
-    <div {...props} className={cn("absolute z-50 h-2 w-2", props.className)}>
+    <div {...props} className={cn("absolute z-50 h-3 w-3", props.className)}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
-        className="absolute -inset-x-10 top-0 m-auto h-2 w-10 rounded-full bg-gradient-to-r from-transparent via-black-500 to-transparent blur-sm"
+        className="absolute -inset-x-12 top-0 m-auto h-3 w-12 rounded-full bg-gradient-to-r from-transparent via-black-500 to-transparent blur-sm"
       ></motion.div>
       {spans.map((span) => (
         <motion.span
@@ -251,7 +313,7 @@ const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
             opacity: 0,
           }}
           transition={{ duration: Math.random() * 1.5 + 0.5, ease: "easeOut" }}
-          className="absolute h-1 w-1 rounded-full bg-gradient-to-b from-gray-500 to-black-500"
+          className="absolute h-1.5 w-1.5 rounded-full bg-gradient-to-b from-gray-500 to-black-500"
         />
       ))}
     </div>
