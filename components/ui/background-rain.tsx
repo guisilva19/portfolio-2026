@@ -132,10 +132,10 @@ export const BackgroundBeamsWithCollision = ({
     <div
       ref={parentRef}
       className={cn(
-        "z-0 h-96 md:h-[40rem] bg-gradient-to-b from-white to-neutral-100 relative flex items-center w-full justify-center overflow-hidden",
-        // h-screen if you want bigger
+        "z-0 bg-gradient-to-b from-white to-neutral-100 relative flex items-center w-full justify-center overflow-hidden",
         className
       )}
+      style={{ height: '100dvh' }}
     >
       {beams.map((beam) => (
         <CollisionMechanism

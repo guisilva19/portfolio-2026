@@ -5,7 +5,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <BackgroundBeamsWithCollision className="min-h-screen w-full">
+      <BackgroundBeamsWithCollision className="w-full">
         <div className="w-screen fixed top-0 left-0 z-1">
           <TypeAnimation />
         </div>
