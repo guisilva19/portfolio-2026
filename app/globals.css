@@ -220,5 +220,5 @@ input#theme:focus-within ~ label,
   background-color: var(--background);
   scale: var(--theme-bg-scale, 0);
   transition: all 300ms ease-in-out;
-  transition-delay: calc(var(--i) * 10ms);
+  transition-delay: calc(var(--i) * 15ms);
 }
