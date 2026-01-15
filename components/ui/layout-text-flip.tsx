@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 
 export const LayoutTextFlip = ({
-  text = "Build Amazing",
-  words = ["Landing Pages", "Component Blocks", "Page Sections", "3D Shaders"],
+  text,
+  words,
   duration = 3000,
 }: {
   text: string;
@@ -26,14 +26,14 @@ export const LayoutTextFlip = ({
     <>
       <motion.span
         layoutId="subtext"
-        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight drop-shadow-lg text-foreground"
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight drop-shadow-lg text-foreground mr-1"
       >
         {text}
       </motion.span>
 
       <motion.span
         layout
-        className="relative w-fit overflow-hidden rounded-md border border-transparent bg-[oklch(0.145_0.025_250)] px-3 py-1.5 sm:px-4 sm:py-2 font-sans text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white shadow-sm ring shadow-blue-900/30 ring-blue-900/30 drop-shadow-lg dark:bg-[oklch(0.145_0.025_250)] dark:text-white dark:shadow-sm dark:ring-1 dark:shadow-blue-500/20 dark:ring-blue-500/20"
+        className="relative w-fit overflow-hidden rounded-md border border-transparent bg-[oklch(0.145_0.025_250)] px-3 py-1.5 sm:px-4 sm:py-2 font-sans text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white shadow-sm ring shadow-blue-900/30 ring-blue-900/30 drop-shadow-lg dark:bg-white dark:text-[#1e293b] dark:shadow-sm dark:ring-1 dark:shadow-blue-500/20 dark:ring-blue-500/20"
       >
         <AnimatePresence mode="popLayout">
           <motion.span

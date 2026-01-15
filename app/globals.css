@@ -153,12 +153,12 @@
 
 .theme-toggle {
   position: fixed;
-  top: 2rem;
-  right: 2rem;
+  top: 1rem;
+  right: 1rem;
   z-index: 9999;
-  width: 60px;
-  height: 60px;
-  padding: 0.75rem;
+  width: 45px;
+  height: 45px;
+  padding: 0.6rem;
   display: grid;
   place-items: center;
   transition: outline 150ms ease-in-out;
@@ -169,13 +169,23 @@
   background: var(--background);
 }
 
+@media (min-width: 640px) {
+  .theme-toggle {
+    top: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    padding: 0.75rem;
+  }
+}
+
 .theme-toggle::before {
   content: var(--toggle-label-txt);
   position: absolute;
   top: 100%;
   left: 50%;
   translate: -50% var(--toggle-label-y, -10px);
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   opacity: var(--toggle-label-opacity, 0);
   transition-property: opacity, translate;
@@ -183,11 +193,25 @@
   transition-timing-function: ease-in-out;
 }
 
+@media (min-width: 640px) {
+  .theme-toggle::before {
+    font-size: 0.7rem;
+  }
+}
+
 input#theme:focus-within ~ label,
 .theme-toggle:hover {
-  outline-width: 5px;
-  --toggle-label-y: 15px;
+  outline-width: 3px;
+  --toggle-label-y: 12px;
   --toggle-label-opacity: 1;
+}
+
+@media (min-width: 640px) {
+  input#theme:focus-within ~ label,
+  .theme-toggle:hover {
+    outline-width: 5px;
+    --toggle-label-y: 15px;
+  }
 }
 
 .theme-toggle > svg {
