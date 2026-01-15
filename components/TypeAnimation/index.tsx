@@ -10,10 +10,10 @@ export default function TypeAnimation() {
   useEffect(() => {
     if (!trayRef.current) return;
 
-    // Ajusta número de cubos baseado no tamanho da tela (reduzido para performance)
+    // Ajusta número de cubos baseado no tamanho da tela
     const isTablet = window.innerWidth > 480 && window.innerWidth <= 768;
     
-    const n = isTablet ? 20 : 30;
+    const n = isTablet ? 25 : 40;
     const spacing = isTablet ? 38 : 56;
     
     const rots = [
@@ -23,7 +23,7 @@ export default function TypeAnimation() {
       { ry: 180, a: 0.35 },
     ];
 
-    // Set initial face rotations with GPU acceleration
+    // Set initial face rotations
     const zDepth = isTablet ? 140 : 180;
     const originDepth = isTablet ? -100 : -161;
     
@@ -31,7 +31,6 @@ export default function TypeAnimation() {
       z: zDepth,
       rotateY: (i) => rots[i].ry,
       transformOrigin: `50% 50% ${originDepth}px`,
-      force3D: true,
     });
 
     // Create clones and animate
@@ -51,13 +50,11 @@ export default function TypeAnimation() {
           cube,
           {
             rotateY: -90,
-            force3D: true,
           },
           {
             rotateY: 90,
             ease: "power1.inOut",
             duration: 5,
-            force3D: true,
           }
         )
         .fromTo(
@@ -114,8 +111,6 @@ export default function TypeAnimation() {
           display: flex;
           align-items: center;
           justify-content: center;
-          pointer-events: none;
-          contain: layout style paint;
         }
 
         .die {
@@ -123,7 +118,6 @@ export default function TypeAnimation() {
           height: 55px;
           padding-bottom: 9px;
           perspective: 999px;
-          will-change: transform;
         }
 
         .cube {
@@ -131,8 +125,6 @@ export default function TypeAnimation() {
           width: 100%;
           height: 100%;
           transform-style: preserve-3d;
-          will-change: transform;
-          transform: translate3d(0, 0, 0);
         }
 
         .face {
@@ -143,13 +135,10 @@ export default function TypeAnimation() {
           align-items: center;
           justify-content: center;
           backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
           font-family: "Montserrat", sans-serif;
           font-optical-sizing: auto;
           font-weight: 900;
           font-style: normal;
-          will-change: transform, color;
-          transform: translate3d(0, 0, 0);
         }
 
         .back {

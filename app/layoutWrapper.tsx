@@ -2,6 +2,7 @@ import { BackgroundBeamsWithCollision } from "@/components/ui/background-rain";
 import TypeAnimation from "@/components/TypeAnimation";
 import TypeAnimationMobile from "@/components/TypeAnimationMobile";
 import ThemeToggle from "@/components/ThemeToggle";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   return (
@@ -14,6 +15,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
         <ThemeToggle />
         {children}
       </BackgroundBeamsWithCollision>
+      <Analytics />
     </>
   );
 }
