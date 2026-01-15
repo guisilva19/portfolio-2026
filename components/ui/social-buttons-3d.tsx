@@ -20,7 +20,7 @@ export const SocialButtons3D = () => {
     {
       icon: <FaGithub className="w-4.5 h-4.5 sm:w-5 sm:h-5" />,
       label: "GitHub",
-      href: "https://github.com/seu-usuario",
+      href: process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com",
       colors: {
         bg: "#fff",
         bgHover: "#24292e",
@@ -31,7 +31,7 @@ export const SocialButtons3D = () => {
     {
       icon: <FaLinkedin className="w-4.5 h-4.5 sm:w-5 sm:h-5" />,
       label: "LinkedIn",
-      href: "https://linkedin.com/in/seu-perfil",
+      href: process.env.NEXT_PUBLIC_LINKEDIN_URL || "https://linkedin.com",
       colors: {
         bg: "#fff",
         bgHover: "#0077b5",
@@ -42,7 +42,7 @@ export const SocialButtons3D = () => {
     {
       icon: <MdEmail className="w-4.5 h-4.5 sm:w-5 sm:h-5" />,
       label: "Gmail",
-      href: "mailto:seu-email@gmail.com",
+      href: `mailto:${process.env.NEXT_PUBLIC_EMAIL || "email@example.com"}`,
       colors: {
         bg: "#fff",
         bgHover: "#EA4335",
@@ -53,7 +53,7 @@ export const SocialButtons3D = () => {
     {
       icon: <FaWhatsapp className="w-4.5 h-4.5 sm:w-5 sm:h-5" />,
       label: "WhatsApp",
-      href: "https://wa.me/5511999999999",
+      href: `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "5511999999999"}`,
       colors: {
         bg: "#fff",
         bgHover: "#25D366",
