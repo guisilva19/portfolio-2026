@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 
@@ -16,6 +16,17 @@ interface SocialButton {
 }
 
 export const SocialButtons3D = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Delay mínimo para garantir que os estilos carreguem
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const socialButtons: SocialButton[] = [
     {
       icon: <FaGithub className="w-4.5 h-4.5 sm:w-5 sm:h-5" />,
@@ -64,7 +75,10 @@ export const SocialButtons3D = () => {
   ];
 
   return (
-    <div className="relative grid grid-cols-2 sm:flex sm:flex-nowrap gap-y-4 gap-x-1 sm:gap-2 justify-center items-center p-2 sm:p-4 max-w-[220px] sm:max-w-none mx-auto">
+    <div 
+      className="relative grid grid-cols-2 sm:flex sm:flex-nowrap gap-y-4 gap-x-1 sm:gap-2 justify-center items-center p-2 sm:p-4 max-w-[220px] sm:max-w-none mx-auto"
+      style={{ visibility: isVisible ? 'visible' : 'hidden' }}
+    >
       <style jsx>{`
         .social-link {
           position: relative;
@@ -81,6 +95,30 @@ export const SocialButtons3D = () => {
             0 12px 20px rgba(0, 0, 0, 0.15),
             0 8px 16px rgba(0, 0, 0, 0.1);
           text-decoration: none;
+          opacity: 0;
+          animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+          to {
+            opacity: 1;
+          }
+        }
+
+        .social-link:nth-child(1) {
+          animation-delay: 0.2s;
+        }
+
+        .social-link:nth-child(2) {
+          animation-delay: 0.3s;
+        }
+
+        .social-link:nth-child(3) {
+          animation-delay: 0.4s;
+        }
+
+        .social-link:nth-child(4) {
+          animation-delay: 0.5s;
         }
 
         @media (min-width: 640px) {
