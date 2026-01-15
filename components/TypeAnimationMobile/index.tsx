@@ -3,18 +3,15 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-export default function TypeAnimation() {
+export default function TypeAnimationMobile() {
   const povRef = useRef<HTMLDivElement>(null);
   const trayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!trayRef.current) return;
 
-    // Ajusta número de cubos baseado no tamanho da tela (reduzido para performance)
-    const isTablet = window.innerWidth > 480 && window.innerWidth <= 768;
-    
-    const n = isTablet ? 20 : 30;
-    const spacing = isTablet ? 38 : 56;
+    const n = 35; // Otimizado para performance no mobile
+    const spacing = 24; // Espaçamento menor
     
     const rots = [
       { ry: 270, a: 0.6 },
@@ -24,10 +21,10 @@ export default function TypeAnimation() {
     ];
 
     // Set initial face rotations with GPU acceleration
-    const zDepth = isTablet ? 140 : 180;
-    const originDepth = isTablet ? -100 : -161;
+    const zDepth = 90;
+    const originDepth = -80;
     
-    gsap.set(".face", {
+    gsap.set(".face-mobile", {
       z: zDepth,
       rotateY: (i) => rots[i].ry,
       transformOrigin: `50% 50% ${originDepth}px`,
@@ -36,13 +33,13 @@ export default function TypeAnimation() {
 
     // Create clones and animate
     for (let i = 0; i < n; i++) {
-      let die = document.querySelector(".die") as HTMLElement;
-      let cube = die?.querySelector(".cube") as HTMLElement;
+      let die = document.querySelector(".die-mobile") as HTMLElement;
+      let cube = die?.querySelector(".cube-mobile") as HTMLElement;
 
       if (i > 0) {
-        let clone = document.querySelector(".die")?.cloneNode(true) as HTMLElement;
-        document.querySelector(".tray")?.append(clone);
-        cube = clone.querySelector(".cube") as HTMLElement;
+        let clone = document.querySelector(".die-mobile")?.cloneNode(true) as HTMLElement;
+        document.querySelector(".tray-mobile")?.append(clone);
+        cube = clone.querySelector(".cube-mobile") as HTMLElement;
       }
 
       gsap
@@ -61,7 +58,7 @@ export default function TypeAnimation() {
           }
         )
         .fromTo(
-          cube.querySelectorAll(".face"),
+          cube.querySelectorAll(".face-mobile"),
           {
             color: (j) =>
               `hsl(0, 0%, ${100 * [rots[3].a, rots[0].a, rots[1].a][j]}%)`,
@@ -73,7 +70,7 @@ export default function TypeAnimation() {
           0
         )
         .to(
-          cube.querySelectorAll(".face"),
+          cube.querySelectorAll(".face-mobile"),
           {
             color: (j) =>
               `hsl(0, 0%, ${100 * [rots[1].a, rots[2].a, rots[3].a][j]}%)`,
@@ -84,23 +81,21 @@ export default function TypeAnimation() {
     }
 
     // Animate tray
-    const scale = isTablet ? 1.0 : 1.2;
-    
     gsap
       .timeline()
-      .from(".tray", { yPercent: -3, duration: 4, ease: "power1.inOut", yoyo: true, repeat: -1 }, 0)
+      .from(".tray-mobile", { yPercent: -3, duration: 4, ease: "power1.inOut", yoyo: true, repeat: -1 }, 0)
       .fromTo(
-        ".tray",
+        ".tray-mobile",
         { rotate: -15 },
         { rotate: 15, duration: 8, ease: "power1.inOut", yoyo: true, repeat: -1 },
         0
       )
-      .from(".die", { duration: 0.01, opacity: 0, stagger: { each: -0.05, ease: "power1.in" } }, 0)
-      .to(".tray", { scale: scale, duration: 4, ease: "power3.inOut", yoyo: true, repeat: -1 }, 0);
+      .from(".die-mobile", { duration: 0.01, opacity: 0, stagger: { each: -0.05, ease: "power1.in" } }, 0)
+      .to(".tray-mobile", { scale: 0.8, duration: 4, ease: "power3.inOut", yoyo: true, repeat: -1 }, 0);
 
     // Set tray height
     const h = n * spacing;
-    gsap.set(".tray", { height: h });
+    gsap.set(".tray-mobile", { height: h });
   }, []);
 
   return (
@@ -108,7 +103,7 @@ export default function TypeAnimation() {
       <style jsx>{`
         @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap");
 
-        .pov {
+        .pov-mobile {
           width: 100%;
           height: 100vh;
           display: flex;
@@ -118,15 +113,15 @@ export default function TypeAnimation() {
           contain: layout style paint;
         }
 
-        .die {
-          width: 400px;
-          height: 55px;
-          padding-bottom: 9px;
-          perspective: 999px;
+        .die-mobile {
+          width: 200px;
+          height: 30px;
+          padding-bottom: 5px;
+          perspective: 600px;
           will-change: transform;
         }
 
-        .cube {
+        .cube-mobile {
           position: absolute;
           width: 100%;
           height: 100%;
@@ -135,7 +130,7 @@ export default function TypeAnimation() {
           transform: translate3d(0, 0, 0);
         }
 
-        .face {
+        .face-mobile {
           position: absolute;
           width: 100%;
           height: 100%;
@@ -152,29 +147,29 @@ export default function TypeAnimation() {
           transform: translate3d(0, 0, 0);
         }
 
-        .back {
+        .back-mobile {
           justify-content: flex-start !important;
-          padding-left: 45px;
+          padding-left: 22px;
         }
 
-        @media (max-width: 920px) {
-          .pov {
+        @media (min-width: 920px) {
+          .pov-mobile {
             display: none !important;
           }
         }
       `}</style>
 
-      <div className="pov fixed 2xl:-right-210  xl:-right-180 -right-120 lg:-right-150 -top-40 -rotate-30 z-1" ref={povRef}>
-        <div className="tray" ref={trayRef}>
-          <div className="die">
-            <div className="cube">
-              <div className="face" style={{ fontSize: "50px" }}>
+      <div className="pov-mobile fixed -right-50 -top-60 -rotate-30 z-1" ref={povRef}>
+        <div className="tray-mobile" ref={trayRef}>
+          <div className="die-mobile">
+            <div className="cube-mobile">
+              <div className="face-mobile" style={{ fontSize: "24px" }}>
                 FULL STACK
               </div>
-              <div className="face" style={{ fontSize: "50px" }}>
+              <div className="face-mobile" style={{ fontSize: "24px" }}>
                 FRONTEND
               </div>
-              <div className="face back" style={{ fontSize: "50px" }}>
+              <div className="face-mobile back-mobile" style={{ fontSize: "24px" }}>
                 BACKEND
               </div>
             </div>
