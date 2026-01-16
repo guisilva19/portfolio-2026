@@ -130,11 +130,11 @@
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(30px) translateZ(0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
 }
 
@@ -150,24 +150,36 @@
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.95) translateZ(0);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateZ(0);
   }
 }
 
 .animate-fade-in-up {
   animation: fadeInUp 0.8s ease-out forwards;
+  will-change: transform, opacity;
 }
 
 .animate-fade-in {
   animation: fadeIn 1s ease-out forwards;
+  will-change: opacity;
 }
 
 .animate-scale-in {
   animation: scaleIn 0.8s ease-out forwards;
+  will-change: transform, opacity;
+}
+
+/* Remove will-change após animação completar para liberar recursos */
+.animate-fade-in-up,
+.animate-fade-in,
+.animate-scale-in {
+  &:not([style*="animation"]) {
+    will-change: auto;
+  }
 }
 
 .animation-delay-200 {
@@ -230,6 +242,9 @@
   outline: 1px solid var(--theme-toggle-border);
   color: var(--theme-toggle-icon);
   background: var(--background);
+  contain: layout style;
+  will-change: outline;
+  transform: translateZ(0);
 }
 
 @media (min-width: 640px) {
@@ -284,6 +299,8 @@ input#theme:focus-within ~ label,
   height: 100%;
   scale: var(--theme-toggle-dark-scale, 1);
   rotate: var(--theme-toggle-rotate, 0turn);
+  will-change: scale, rotate;
+  transform: translateZ(0);
 }
 
 .theme-toggle > svg:first-child {
@@ -299,11 +316,21 @@ input#theme:focus-within ~ label,
   grid-template-rows: repeat(25, 1fr);
   pointer-events: none;
   z-index: -1;
+  contain: strict;
 }
 
 .theme-mask > div {
-  background-color: var(--background);
+  background-color: oklch(0.145 0.025 250);
   scale: var(--theme-bg-scale, 0);
-  transition: all 300ms ease-in-out;
+  transition: transform 300ms ease-in-out, scale 300ms ease-in-out;
   transition-delay: calc(var(--i) * 15ms);
+  will-change: scale;
+  transform: translateZ(0);
+}
+
+@media (max-width: 640px) {
+  .theme-mask > div {
+    transition: transform 200ms ease-in-out, scale 200ms ease-in-out;
+    transition-delay: calc(var(--i) * 10ms);
+  }
 }

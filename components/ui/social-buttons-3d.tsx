@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, memo } from "react";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 
@@ -87,8 +87,8 @@ export const SocialButtons3D = () => {
           height: 42px;
           background: #fff;
           padding-left: 10px;
-          transform: rotate(-30deg) skew(25deg) translate(0, 0);
-          transition: all 0.5s;
+          transform: rotate(-30deg) skew(25deg) translate3d(0, 0, 0);
+          transition: transform 0.4s ease-out, background 0.3s ease-out, box-shadow 0.4s ease-out;
           box-shadow: 
             -8px 8px 5px rgba(0, 0, 0, 0.5),
             0 12px 20px rgba(0, 0, 0, 0.15),
@@ -96,6 +96,8 @@ export const SocialButtons3D = () => {
           text-decoration: none;
           opacity: 0;
           animation: fadeIn 0.5s ease-out forwards;
+          will-change: transform;
+          contain: layout style;
         }
 
         @keyframes fadeIn {
@@ -157,8 +159,8 @@ export const SocialButtons3D = () => {
           height: 100%;
           width: 10px;
           background: #b1b1b1;
-          transition: all 0.5s;
-          transform: rotate(0deg) skewY(-45deg);
+          transition: background 0.3s ease-out;
+          transform: rotate(0deg) skewY(-45deg) translateZ(0);
         }
 
         @media (min-width: 640px) {
@@ -181,8 +183,8 @@ export const SocialButtons3D = () => {
           height: 10px;
           width: 100%;
           background: #b1b1b1;
-          transition: all 0.5s;
-          transform: rotate(0deg) skewX(-45deg);
+          transition: background 0.3s ease-out;
+          transform: rotate(0deg) skewX(-45deg) translateZ(0);
         }
 
         @media (min-width: 640px) {
@@ -198,7 +200,7 @@ export const SocialButtons3D = () => {
         }
 
         .social-link:hover {
-          transform: rotate(-30deg) skew(25deg) translate(10px, -8px);
+          transform: rotate(-30deg) skew(25deg) translate3d(10px, -8px, 0);
           box-shadow: 
             -22px 22px 22px rgba(0, 0, 0, 0.5),
             0 20px 30px rgba(0, 0, 0, 0.2);
@@ -206,7 +208,7 @@ export const SocialButtons3D = () => {
 
         @media (min-width: 640px) {
           .social-link:hover {
-            transform: rotate(-30deg) skew(25deg) translate(12px, -10px);
+            transform: rotate(-30deg) skew(25deg) translate3d(12px, -10px, 0);
             box-shadow: 
               -28px 28px 28px rgba(0, 0, 0, 0.5),
               0 22px 35px rgba(0, 0, 0, 0.2);
@@ -242,7 +244,7 @@ export const SocialButtons3D = () => {
 
         .social-link .icon-wrapper {
           color: #262626;
-          transition: 0.5s;
+          transition: color 0.3s ease-out;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -260,7 +262,7 @@ export const SocialButtons3D = () => {
         .social-link .label {
           color: #262626;
           letter-spacing: 0.8px;
-          transition: 0.5s;
+          transition: color 0.3s ease-out;
           font-size: 10px;
           font-weight: 600;
           white-space: nowrap;

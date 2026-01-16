@@ -1,7 +1,36 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useMemo } from "react";
+
+// Beams para desktop (15 beams)
+const desktopBeams = [
+  { initialX: 10, translateX: 10, duration: 7, repeatDelay: 3, delay: 2 },
+  { initialX: 600, translateX: 600, duration: 3, repeatDelay: 3, delay: 4 },
+  { initialX: 100, translateX: 100, duration: 7, repeatDelay: 7, className: "h-6" },
+  { initialX: 400, translateX: 400, duration: 5, repeatDelay: 14, delay: 4 },
+  { initialX: 800, translateX: 800, duration: 11, repeatDelay: 2, className: "h-20" },
+  { initialX: 1000, translateX: 1000, duration: 4, repeatDelay: 2, className: "h-12" },
+  { initialX: 1200, translateX: 1200, duration: 6, repeatDelay: 4, delay: 2, className: "h-6" },
+  { initialX: 300, translateX: 300, duration: 5, repeatDelay: 5, delay: 1, className: "h-8" },
+  { initialX: 700, translateX: 700, duration: 8, repeatDelay: 3, delay: 3, className: "h-10" },
+  { initialX: 900, translateX: 900, duration: 6, repeatDelay: 4, delay: 1 },
+  { initialX: 1400, translateX: 1400, duration: 7, repeatDelay: 3, delay: 2, className: "h-10" },
+  { initialX: 1600, translateX: 1600, duration: 5, repeatDelay: 6, delay: 1, className: "h-8" },
+  { initialX: 1800, translateX: 1800, duration: 6, repeatDelay: 4, delay: 3, className: "h-12" },
+  { initialX: 1500, translateX: 1500, duration: 8, repeatDelay: 2, delay: 4 },
+  { initialX: 1700, translateX: 1700, duration: 4, repeatDelay: 5, delay: 2, className: "h-6" },
+];
+
+// Beams reduzidos para mobile (6 beams - menos stress na GPU)
+const mobileBeams = [
+  { initialX: 30, translateX: 30, duration: 8, repeatDelay: 4, delay: 2 },
+  { initialX: 120, translateX: 120, duration: 6, repeatDelay: 5, delay: 1, className: "h-6" },
+  { initialX: 200, translateX: 200, duration: 7, repeatDelay: 4, delay: 3 },
+  { initialX: 280, translateX: 280, duration: 9, repeatDelay: 3, delay: 2, className: "h-8" },
+  { initialX: 350, translateX: 350, duration: 6, repeatDelay: 5, delay: 4 },
+  { initialX: 80, translateX: 80, duration: 8, repeatDelay: 4, delay: 1, className: "h-6" },
+];
 
 export const BackgroundBeamsWithCollision = ({
   children,
@@ -12,121 +41,20 @@ export const BackgroundBeamsWithCollision = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const beams = [
-    {
-      initialX: 10,
-      translateX: 10,
-      duration: 7,
-      repeatDelay: 3,
-      delay: 2,
-    },
-    {
-      initialX: 600,
-      translateX: 600,
-      duration: 3,
-      repeatDelay: 3,
-      delay: 4,
-    },
-    {
-      initialX: 100,
-      translateX: 100,
-      duration: 7,
-      repeatDelay: 7,
-      className: "h-6",
-    },
-    {
-      initialX: 400,
-      translateX: 400,
-      duration: 5,
-      repeatDelay: 14,
-      delay: 4,
-    },
-    {
-      initialX: 800,
-      translateX: 800,
-      duration: 11,
-      repeatDelay: 2,
-      className: "h-20",
-    },
-    {
-      initialX: 1000,
-      translateX: 1000,
-      duration: 4,
-      repeatDelay: 2,
-      className: "h-12",
-    },
-    {
-      initialX: 1200,
-      translateX: 1200,
-      duration: 6,
-      repeatDelay: 4,
-      delay: 2,
-      className: "h-6",
-    },
-    {
-      initialX: 300,
-      translateX: 300,
-      duration: 5,
-      repeatDelay: 5,
-      delay: 1,
-      className: "h-8",
-    },
-    {
-      initialX: 700,
-      translateX: 700,
-      duration: 8,
-      repeatDelay: 3,
-      delay: 3,
-      className: "h-10",
-    },
-    {
-      initialX: 900,
-      translateX: 900,
-      duration: 6,
-      repeatDelay: 4,
-      delay: 1,
-    },
-    {
-      initialX: 1400,
-      translateX: 1400,
-      duration: 7,
-      repeatDelay: 3,
-      delay: 2,
-      className: "h-10",
-    },
-    {
-      initialX: 1600,
-      translateX: 1600,
-      duration: 5,
-      repeatDelay: 6,
-      delay: 1,
-      className: "h-8",
-    },
-    {
-      initialX: 1800,
-      translateX: 1800,
-      duration: 6,
-      repeatDelay: 4,
-      delay: 3,
-      className: "h-12",
-    },
-    {
-      initialX: 1500,
-      translateX: 1500,
-      duration: 8,
-      repeatDelay: 2,
-      delay: 4,
-    },
-    {
-      initialX: 1700,
-      translateX: 1700,
-      duration: 4,
-      repeatDelay: 5,
-      delay: 2,
-      className: "h-6",
-    },
-  ];
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    
+    // Usar ResizeObserver é mais eficiente que resize event
+    const resizeObserver = new ResizeObserver(checkMobile);
+    resizeObserver.observe(document.body);
+    
+    return () => resizeObserver.disconnect();
+  }, []);
+
+  const beams = useMemo(() => isMobile ? mobileBeams : desktopBeams, [isMobile]);
 
   return (
     <div
@@ -189,37 +117,46 @@ const CollisionMechanism = React.forwardRef<
   const [cycleCollisionDetected, setCycleCollisionDetected] = useState(false);
 
   useEffect(() => {
-    const checkCollision = () => {
-      if (
-        beamRef.current &&
-        containerRef.current &&
-        parentRef.current &&
-        !cycleCollisionDetected
-      ) {
-        const beamRect = beamRef.current.getBoundingClientRect();
-        const containerRect = containerRef.current.getBoundingClientRect();
-        const parentRect = parentRef.current.getBoundingClientRect();
+    let animationFrameId: number;
+    let lastCheck = 0;
+    const checkInterval = 80; // Aumentado de 50ms para 80ms no mobile
 
-        if (beamRect.bottom >= containerRect.top) {
-          const relativeX =
-            beamRect.left - parentRect.left + beamRect.width / 2;
-          const relativeY = beamRect.bottom - parentRect.top;
+    const checkCollision = (timestamp: number) => {
+      if (timestamp - lastCheck >= checkInterval) {
+        lastCheck = timestamp;
+        
+        if (
+          beamRef.current &&
+          containerRef.current &&
+          parentRef.current &&
+          !cycleCollisionDetected
+        ) {
+          const beamRect = beamRef.current.getBoundingClientRect();
+          const containerRect = containerRef.current.getBoundingClientRect();
+          const parentRect = parentRef.current.getBoundingClientRect();
 
-          setCollision({
-            detected: true,
-            coordinates: {
-              x: relativeX,
-              y: relativeY,
-            },
-          });
-          setCycleCollisionDetected(true);
+          if (beamRect.bottom >= containerRect.top) {
+            const relativeX =
+              beamRect.left - parentRect.left + beamRect.width / 2;
+            const relativeY = beamRect.bottom - parentRect.top;
+
+            setCollision({
+              detected: true,
+              coordinates: {
+                x: relativeX,
+                y: relativeY,
+              },
+            });
+            setCycleCollisionDetected(true);
+          }
         }
       }
+      animationFrameId = requestAnimationFrame(checkCollision);
     };
 
-    const animationInterval = setInterval(checkCollision, 50);
+    animationFrameId = requestAnimationFrame(checkCollision);
 
-    return () => clearInterval(animationInterval);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [cycleCollisionDetected, containerRef]);
 
   useEffect(() => {
@@ -262,9 +199,10 @@ const CollisionMechanism = React.forwardRef<
           repeatDelay: beamOptions.repeatDelay || 0,
         }}
         className={cn(
-          "absolute left-0 top-20 m-auto h-14 w-px rounded-full bg-gradient-to-t from-gray-500 via-black-500 to-transparent",
+          "absolute left-0 top-20 m-auto h-14 w-px rounded-full bg-gradient-to-t from-gray-500 via-black-500 to-transparent will-change-transform",
           beamOptions.className
         )}
+        style={{ transform: "translateZ(0)" }}
       />
       <AnimatePresence>
         {collision.detected && collision.coordinates && (
@@ -286,13 +224,14 @@ const CollisionMechanism = React.forwardRef<
 CollisionMechanism.displayName = "CollisionMechanism";
 
 const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
-  const spans = Array.from({ length: 35 }, (_, index) => ({
+  // Reduzir partículas de 35 para 20 para melhor performance mobile
+  const spans = useMemo(() => Array.from({ length: 20 }, (_, index) => ({
     id: index,
     initialX: 0,
     initialY: 0,
     directionX: Math.floor(Math.random() * 100 - 50),
     directionY: Math.floor(Math.random() * -60 - 10),
-  }));
+  })), []);
 
   return (
     <div {...props} className={cn("absolute z-50 h-3 w-3", props.className)}>

@@ -15,8 +15,9 @@ export default function TypeAnimationMobile() {
     gsap.set(".die-mobile", { opacity: 0 });
     gsap.set(".face-mobile", { opacity: 0 });
 
-    const n = 35;
-    const spacing = 24;
+    // Reduzido de 35 para 25 elementos para melhor performance
+    const n = 25;
+    const spacing = 26;
     
     const rots = [
       { ry: 270, a: 0.6 },
@@ -47,7 +48,13 @@ export default function TypeAnimationMobile() {
       }
 
       gsap
-        .timeline({ repeat: -1, yoyo: true, defaults: { ease: "power3.inOut", duration: 2.5 } })
+        .timeline({ 
+          repeat: -1, 
+          yoyo: true, 
+          defaults: { ease: "power2.inOut", duration: 3 },
+          // Usar ticker menos frequente para economia de CPU
+          autoRender: true,
+        })
         .fromTo(
           cube,
           {
@@ -56,8 +63,8 @@ export default function TypeAnimationMobile() {
           },
           {
             rotateY: 90,
-            ease: "power1.inOut",
-            duration: 5,
+            ease: "power2.inOut",
+            duration: 6,
             force3D: true,
           }
         )
@@ -101,16 +108,17 @@ export default function TypeAnimationMobile() {
       gsap.to(".face-mobile", { opacity: 1, duration: 0.6, ease: "power2.out" });
     }, 300);
 
+    // Animações mais suaves e otimizadas para mobile
     gsap
       .timeline({ delay: 1.5 })
-      .from(".tray-mobile", { yPercent: -3, duration: 4, ease: "power1.inOut", yoyo: true, repeat: -1 }, 0)
+      .from(".tray-mobile", { yPercent: -2, duration: 5, ease: "power1.inOut", yoyo: true, repeat: -1 }, 0)
       .fromTo(
         ".tray-mobile",
-        { rotate: -15 },
-        { rotate: 15, duration: 8, ease: "power1.inOut", yoyo: true, repeat: -1 },
+        { rotate: -12 },
+        { rotate: 12, duration: 10, ease: "power1.inOut", yoyo: true, repeat: -1 },
         0
       )
-      .to(".tray-mobile", { scale: 0.8, duration: 4, ease: "power3.inOut", yoyo: true, repeat: -1 }, 0);
+      .to(".tray-mobile", { scale: 0.85, duration: 5, ease: "power2.inOut", yoyo: true, repeat: -1 }, 0);
   }, []);
 
   return (
@@ -143,6 +151,7 @@ export default function TypeAnimationMobile() {
           transform-style: preserve-3d;
           will-change: transform;
           transform: translate3d(0, 0, 0);
+          contain: layout style;
         }
 
         .face-mobile {

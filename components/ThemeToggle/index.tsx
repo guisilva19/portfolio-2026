@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(false);
@@ -19,18 +19,38 @@ export default function ThemeToggle() {
     }
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = !isDark;
-    setIsDark(newTheme);
+  const toggleTheme = useCallback(() => {
+    setIsDark(prev => {
+      const newTheme = !prev;
+      
+      // Use requestAnimationFrame para evitar layout thrashing
+      requestAnimationFrame(() => {
+        if (newTheme) {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        }
+      });
+      
+      return newTheme;
+    });
+  }, []);
 
-    if (newTheme) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  };
+  // Memoize os elementos do mask para evitar recriação
+  const maskElements = useMemo(() => {
+    const center = 12;
+    return Array.from({ length: 25 }).map((_, i) => {
+      const distanceFromCenter = Math.abs(i - center);
+      return (
+        <div 
+          key={i} 
+          style={{ "--i": distanceFromCenter } as React.CSSProperties}
+        />
+      );
+    });
+  }, []);
 
   return (
     <>
@@ -57,9 +77,9 @@ export default function ThemeToggle() {
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
-          <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"></path>
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+          <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
         </svg>
 
         <svg
@@ -71,22 +91,13 @@ export default function ThemeToggle() {
           strokeLinecap="round"
           strokeLinejoin="round"
         >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"></path>
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
         </svg>
       </label>
 
       <div className="theme-mask">
-        {Array.from({ length: 25 }).map((_, i) => {
-          const center = 12;
-          const distanceFromCenter = Math.abs(i - center);
-          return (
-            <div 
-              key={i} 
-              style={{ "--i": distanceFromCenter } as React.CSSProperties}
-            ></div>
-          );
-        })}
+        {maskElements}
       </div>
     </>
   );
