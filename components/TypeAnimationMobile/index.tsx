@@ -10,8 +10,13 @@ export default function TypeAnimationMobile() {
   useEffect(() => {
     if (!trayRef.current) return;
 
-    const n = 35; // Otimizado para performance no mobile
-    const spacing = 24; // Espaçamento menor
+    gsap.set(".pov-mobile", { opacity: 0, visibility: "hidden" });
+    gsap.set(".tray-mobile", { opacity: 0 });
+    gsap.set(".die-mobile", { opacity: 0 });
+    gsap.set(".face-mobile", { opacity: 0 });
+
+    const n = 35;
+    const spacing = 24;
     
     const rots = [
       { ry: 270, a: 0.6 },
@@ -20,7 +25,6 @@ export default function TypeAnimationMobile() {
       { ry: 180, a: 0.35 },
     ];
 
-    // Set initial face rotations with GPU acceleration
     const zDepth = 90;
     const originDepth = -80;
     
@@ -29,9 +33,9 @@ export default function TypeAnimationMobile() {
       rotateY: (i) => rots[i].ry,
       transformOrigin: `50% 50% ${originDepth}px`,
       force3D: true,
+      opacity: 0,
     });
 
-    // Create clones and animate
     for (let i = 0; i < n; i++) {
       let die = document.querySelector(".die-mobile") as HTMLElement;
       let cube = die?.querySelector(".cube-mobile") as HTMLElement;
@@ -80,9 +84,25 @@ export default function TypeAnimationMobile() {
         .progress(i / n);
     }
 
-    // Animate tray
+    const h = n * spacing;
+    gsap.set(".tray-mobile", { height: h, opacity: 0 });
+    gsap.set(".pov-mobile", { x: 300 });
+
+    setTimeout(() => {
+      gsap.set(".pov-mobile", { visibility: "visible" });
+      gsap.to(".pov-mobile", { 
+        opacity: 1, 
+        x: 0,
+        duration: 0.7, 
+        ease: "power2.out" 
+      });
+      gsap.to(".tray-mobile", { opacity: 1, duration: 0.6, ease: "power2.out" });
+      gsap.to(".die-mobile", { opacity: 1, duration: 0.6, ease: "power2.out", stagger: 0.02 });
+      gsap.to(".face-mobile", { opacity: 1, duration: 0.6, ease: "power2.out" });
+    }, 300);
+
     gsap
-      .timeline()
+      .timeline({ delay: 1.5 })
       .from(".tray-mobile", { yPercent: -3, duration: 4, ease: "power1.inOut", yoyo: true, repeat: -1 }, 0)
       .fromTo(
         ".tray-mobile",
@@ -90,12 +110,7 @@ export default function TypeAnimationMobile() {
         { rotate: 15, duration: 8, ease: "power1.inOut", yoyo: true, repeat: -1 },
         0
       )
-      .from(".die-mobile", { duration: 0.01, opacity: 0, stagger: { each: -0.05, ease: "power1.in" } }, 0)
       .to(".tray-mobile", { scale: 0.8, duration: 4, ease: "power3.inOut", yoyo: true, repeat: -1 }, 0);
-
-    // Set tray height
-    const h = n * spacing;
-    gsap.set(".tray-mobile", { height: h });
   }, []);
 
   return (

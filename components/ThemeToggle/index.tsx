@@ -6,7 +6,6 @@ export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    // Verifica o tema salvo no localStorage
     const savedTheme = localStorage.getItem("theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     
@@ -77,10 +76,8 @@ export default function ThemeToggle() {
         </svg>
       </label>
 
-      {/* theme mask */}
       <div className="theme-mask">
         {Array.from({ length: 25 }).map((_, i) => {
-          // Calcula a distância do centro (índice 12) para começar do meio
           const center = 12;
           const distanceFromCenter = Math.abs(i - center);
           return (

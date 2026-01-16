@@ -10,7 +10,11 @@ export default function TypeAnimation() {
   useEffect(() => {
     if (!trayRef.current) return;
 
-    // Ajusta número de cubos baseado no tamanho da tela
+    gsap.set(".pov", { opacity: 0, visibility: "hidden" });
+    gsap.set(".tray", { opacity: 0 });
+    gsap.set(".die", { opacity: 0 });
+    gsap.set(".face", { opacity: 0 });
+
     const isTablet = window.innerWidth > 480 && window.innerWidth <= 768;
     
     const n = isTablet ? 25 : 40;
@@ -23,7 +27,6 @@ export default function TypeAnimation() {
       { ry: 180, a: 0.35 },
     ];
 
-    // Set initial face rotations
     const zDepth = isTablet ? 140 : 180;
     const originDepth = isTablet ? -100 : -161;
     
@@ -31,9 +34,9 @@ export default function TypeAnimation() {
       z: zDepth,
       rotateY: (i) => rots[i].ry,
       transformOrigin: `50% 50% ${originDepth}px`,
+      opacity: 0,
     });
 
-    // Create clones and animate
     for (let i = 0; i < n; i++) {
       let die = document.querySelector(".die") as HTMLElement;
       let cube = die?.querySelector(".cube") as HTMLElement;
@@ -80,11 +83,27 @@ export default function TypeAnimation() {
         .progress(i / n);
     }
 
-    // Animate tray
+    const h = n * spacing;
+    gsap.set(".tray", { height: h, opacity: 0 });
+    gsap.set(".pov", { x: 500 });
+
+    setTimeout(() => {
+      gsap.set(".pov", { visibility: "visible" });
+      gsap.to(".pov", { 
+        opacity: 1, 
+        x: 0,
+        duration: 0.7, 
+        ease: "power2.out" 
+      });
+      gsap.to(".tray", { opacity: 1, duration: 0.6, ease: "power2.out" });
+      gsap.to(".die", { opacity: 1, duration: 0.6, ease: "power2.out", stagger: 0.02 });
+      gsap.to(".face", { opacity: 1, duration: 0.6, ease: "power2.out" });
+    }, 300);
+
     const scale = isTablet ? 1.0 : 1.2;
     
     gsap
-      .timeline()
+      .timeline({ delay: 1.5 })
       .from(".tray", { yPercent: -3, duration: 4, ease: "power1.inOut", yoyo: true, repeat: -1 }, 0)
       .fromTo(
         ".tray",
@@ -92,12 +111,7 @@ export default function TypeAnimation() {
         { rotate: 15, duration: 8, ease: "power1.inOut", yoyo: true, repeat: -1 },
         0
       )
-      .from(".die", { duration: 0.01, opacity: 0, stagger: { each: -0.05, ease: "power1.in" } }, 0)
       .to(".tray", { scale: scale, duration: 4, ease: "power3.inOut", yoyo: true, repeat: -1 }, 0);
-
-    // Set tray height
-    const h = n * spacing;
-    gsap.set(".tray", { height: h });
   }, []);
 
   return (

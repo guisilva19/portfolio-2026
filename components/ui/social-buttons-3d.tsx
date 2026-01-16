@@ -19,7 +19,6 @@ export const SocialButtons3D = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Delay mínimo para garantir que os estilos carreguem
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 50);
