@@ -56,7 +56,7 @@ const ALURA_PROFILE_URL = "https://cursos.alura.com.br/user/2003silvagui";
 export default function Education() {
   return (
     <PageContainer className="px-6 sm:px-8 pt-32 md:pt-28 pb-20">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-[700px] md:max-w-[700px] xl:max-w-4xl mx-auto md:ml-64 xl:ml-auto">
         <div className="flex flex-wrap items-end justify-between gap-4 mb-12 md:mb-16">
           <h1 className="text-4xl md:text-6xl font-bold text-foreground opacity-0 animate-fade-in-up">
             Educação
