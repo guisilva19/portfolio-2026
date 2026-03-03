@@ -14,8 +14,10 @@ export default function ThemeToggle() {
     
     if (shouldBeDark) {
       document.documentElement.classList.add("dark");
+      document.documentElement.setAttribute("data-theme-mask", "reveal");
     } else {
       document.documentElement.classList.remove("dark");
+      document.documentElement.removeAttribute("data-theme-mask");
     }
   }, []);
 
@@ -23,16 +25,25 @@ export default function ThemeToggle() {
     setIsDark(prev => {
       const newTheme = !prev;
       
-      // Use requestAnimationFrame para evitar layout thrashing
-      requestAnimationFrame(() => {
-        if (newTheme) {
-          document.documentElement.classList.add("dark");
-          localStorage.setItem("theme", "dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-          localStorage.setItem("theme", "light");
-        }
-      });
+      if (newTheme) {
+        // Light → Dark: expandir máscara primeiro, depois trocar tema e recolher
+        document.documentElement.removeAttribute("data-theme-mask");
+        requestAnimationFrame(() => {
+          // Fase 1: máscara expande sobre a página light
+          const maskDuration = 400;
+          setTimeout(() => {
+            document.documentElement.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+            // Fase 2: recolher máscara para revelar a página dark
+            document.documentElement.setAttribute("data-theme-mask", "reveal");
+          }, maskDuration);
+        });
+      } else {
+        // Dark → Light: trocar tema imediatamente, máscara recolhe (já funciona)
+        document.documentElement.classList.remove("dark");
+        document.documentElement.removeAttribute("data-theme-mask");
+        localStorage.setItem("theme", "light");
+      }
       
       return newTheme;
     });

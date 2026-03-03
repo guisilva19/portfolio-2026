@@ -214,6 +214,11 @@
   --toggle-label-txt: "light";
 }
 
+/* Light→Dark: após expandir, recolher máscara para revelar a página dark */
+:root:has(input#theme:checked)[data-theme-mask="reveal"] {
+  --theme-bg-scale: 0;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
