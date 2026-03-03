@@ -47,7 +47,6 @@ export const BackgroundBeamsWithCollision = ({
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     
-    // Usar ResizeObserver é mais eficiente que resize event
     const resizeObserver = new ResizeObserver(checkMobile);
     resizeObserver.observe(document.body);
     
@@ -57,32 +56,34 @@ export const BackgroundBeamsWithCollision = ({
   const beams = useMemo(() => isMobile ? mobileBeams : desktopBeams, [isMobile]);
 
   return (
-    <div
-      ref={parentRef}
-      className={cn(
-        "z-0 bg-gradient-to-b from-white to-neutral-100 relative flex items-center w-full justify-center overflow-hidden",
-        className
-      )}
-      style={{ height: '100dvh' }}
-    >
-      {beams.map((beam) => (
-        <CollisionMechanism
-          key={beam.initialX + "beam-idx"}
-          beamOptions={beam}
-          containerRef={containerRef}
-          parentRef={parentRef}
-        />
-      ))}
-
-      {children}
+    <div className={cn("relative min-h-screen w-full isolate", className)}>
+      {/* Fixed beam layer - behind everything */}
       <div
-        ref={containerRef}
-        className="absolute bottom-0 bg-neutral-100 w-full inset-x-0 pointer-events-none"
-        style={{
-          boxShadow:
-            "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset",
-        }}
-      ></div>
+        ref={parentRef}
+        className="fixed inset-0 -z-10 overflow-hidden pointer-events-none"
+      >
+        {beams.map((beam) => (
+          <CollisionMechanism
+            key={beam.initialX + "beam-idx"}
+            beamOptions={beam}
+            containerRef={containerRef}
+            parentRef={parentRef}
+          />
+        ))}
+        <div
+          ref={containerRef}
+          className="absolute bottom-0 w-full inset-x-0 pointer-events-none"
+          style={{
+            boxShadow:
+              "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset",
+          }}
+        ></div>
+      </div>
+
+      {/* Scrollable content - above beams */}
+      <div className="relative">
+        {children}
+      </div>
     </div>
   );
 };
@@ -119,7 +120,7 @@ const CollisionMechanism = React.forwardRef<
   useEffect(() => {
     let animationFrameId: number;
     let lastCheck = 0;
-    const checkInterval = 80; // Aumentado de 50ms para 80ms no mobile
+    const checkInterval = 80;
 
     const checkCollision = (timestamp: number) => {
       if (timestamp - lastCheck >= checkInterval) {
@@ -199,7 +200,7 @@ const CollisionMechanism = React.forwardRef<
           repeatDelay: beamOptions.repeatDelay || 0,
         }}
         className={cn(
-          "absolute left-0 top-20 m-auto h-14 w-px rounded-full bg-gradient-to-t from-gray-500 via-black-500 to-transparent will-change-transform",
+          "absolute left-0 top-20 m-auto h-14 w-px rounded-full bg-linear-to-t from-gray-500 via-black-500 to-transparent will-change-transform",
           beamOptions.className
         )}
         style={{ transform: "translateZ(0)" }}
@@ -224,7 +225,6 @@ const CollisionMechanism = React.forwardRef<
 CollisionMechanism.displayName = "CollisionMechanism";
 
 const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
-  // Reduzir partículas de 35 para 20 para melhor performance mobile
   const spans = useMemo(() => Array.from({ length: 20 }, (_, index) => ({
     id: index,
     initialX: 0,
@@ -240,7 +240,7 @@ const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
-        className="absolute -inset-x-12 top-0 m-auto h-3 w-12 rounded-full bg-gradient-to-r from-transparent via-black-500 to-transparent blur-sm"
+        className="absolute -inset-x-12 top-0 m-auto h-3 w-12 rounded-full bg-linear-to-r from-transparent via-black-500 to-transparent blur-sm"
       ></motion.div>
       {spans.map((span) => (
         <motion.span
@@ -252,7 +252,7 @@ const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
             opacity: 0,
           }}
           transition={{ duration: Math.random() * 1.5 + 0.5, ease: "easeOut" }}
-          className="absolute h-1.5 w-1.5 rounded-full bg-gradient-to-b from-gray-500 to-black-500"
+          className="absolute h-1.5 w-1.5 rounded-full bg-linear-to-b from-gray-500 to-black-500"
         />
       ))}
     </div>
