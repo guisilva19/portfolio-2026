@@ -2,7 +2,12 @@
 
 import { motion } from "motion/react";
 import { ExternalLink } from "lucide-react";
+import Image from "next/image";
 import PageContainer from "@/components/PageContainer";
+
+import angularCert from "@/assets/certificados/angular.png";
+import solidCert from "@/assets/certificados/solid.png";
+import javaCert from "@/assets/certificados/java.png";
 
 const mainEducation = [
   {
@@ -32,23 +37,27 @@ const certificates = [
     subtitle: "Componentes com signals e controle de fluxo",
     issuer: "Alura",
     date: "Fev 2026",
-    skills: ["Angular", "Signals", "TypeScript", "Control Flow"],
+    skills: ["Angular", "TypeScript"],
     url: "https://cursos.alura.com.br/certificate/5e5bfbb6-b64a-4798-9319-0bc296b11801?lang=pt_BR",
+    image: angularCert,
   },
   {
     title: "SOLID com TypeScript",
     subtitle: "Aplicando boas práticas em orientação a objetos",
     issuer: "Alura",
     date: "Fev 2026",
-    skills: ["Programação orientada a objetos (POO)"],
+    skills: ["SOLID", "Programação orientada a objetos (POO)"],
     url: "https://cursos.alura.com.br/certificate/5c353302-74f6-4e7b-bfef-d675726a116e?lang=pt_BR",
+    image: solidCert,
   },
   {
     title: "Java Foundations",
+    subtitle: "Fundamentos de programação Java e orientação a objetos",
     issuer: "Oracle",
     date: "Abr 2023",
-    skills: ["Programação orientada a objetos (POO)"],
+    skills: ["Java", "Programação orientada a objetos (POO)"],
     url: "https://drive.google.com/file/d/1zonbXCfhoaWhSoKH2ABXj7mRBFxplHn_/view",
+    image: javaCert,
   },
 ];
 
@@ -167,51 +176,70 @@ export default function Education() {
                     delay: 1.0 + index * 0.1,
                     ease: "easeOut",
                   }}
-                  className="group p-5 rounded-xl border border-border/60 bg-muted/20 backdrop-blur-sm
-                             hover:border-foreground/25 hover:bg-muted/30 hover:shadow-lg
-                             transition-all duration-300 flex flex-col"
+                  className="group relative overflow-hidden rounded-xl border border-border/60 aspect-[4/3] min-h-[180px]"
                 >
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                      {cert.issuer}
-                    </span>
-                    <span className="text-muted-foreground/30">·</span>
-                    <span className="text-[10px] text-muted-foreground/60">
-                      {cert.date}
-                    </span>
-                  </div>
-
-                  <div className="flex items-start justify-between gap-3 mb-1">
-                    <h3 className="text-sm font-semibold text-foreground/80 group-hover:text-foreground transition-colors duration-300">
-                      {cert.title}
-                    </h3>
-                    {hasLink && (
-                      <ExternalLink className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground/30 group-hover:text-foreground/50 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  {/* Imagem do certificado - sempre visível */}
+                  <div className="absolute inset-0 bg-muted/30 rounded-xl overflow-hidden">
+                    {cert.image ? (
+                      <Image
+                        src={cert.image}
+                        alt={cert.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
+                        <span className="text-4xl font-bold text-muted-foreground/30">{cert.issuer[0]}</span>
+                      </div>
                     )}
                   </div>
-                
-                {cert.subtitle && (
-                  <p className="text-xs text-muted-foreground/60 mb-3">
-                    {cert.subtitle}
-                  </p>
-                )}
 
-                <div className="flex flex-wrap gap-1.5 mt-auto pt-3">
-                  {cert.skills.slice(0, 3).map((skill) => (
-                    <span
-                      key={skill}
-                      className="text-[10px] px-2 py-0.5 rounded-full bg-foreground/[0.06] border border-border/40 text-muted-foreground"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                  {cert.skills.length > 3 && (
-                    <span className="text-[10px] px-2 py-0.5 text-muted-foreground/50">
-                      +{cert.skills.length - 3}
-                    </span>
-                  )}
-                </div>
-              </CardWrapper>
+                  {/* Overlay com info - visível no hover - fundo inverso ao tema */}
+                  <div className="absolute -inset-px rounded-xl overflow-hidden bg-foreground/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col p-5 justify-between text-background">
+                    <div className="translate-y-8 group-hover:translate-y-0 transition-transform duration-500 ease-out flex flex-col justify-between flex-1 min-h-0 gap-3">
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-[10px] font-medium uppercase tracking-wider text-background/70">
+                            {cert.issuer}
+                          </span>
+                          <span className="text-background/40">·</span>
+                          <span className="text-[10px] text-background/60">
+                            {cert.date}
+                          </span>
+                        </div>
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <h3 className="text-sm font-semibold text-background line-clamp-2">
+                            {cert.title}
+                          </h3>
+                          {hasLink && (
+                            <ExternalLink className="w-3.5 h-3.5 shrink-0 mt-0.5 text-background/60 group-hover:text-background transition-colors" />
+                          )}
+                        </div>
+                        {cert.subtitle && (
+                          <p className="text-xs text-background/80 line-clamp-2">
+                            {cert.subtitle}
+                          </p>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {cert.skills.slice(0, 3).map((skill) => (
+                          <span
+                            key={skill}
+                            className="text-[10px] px-2 py-0.5 rounded-full bg-background/20 border border-background/30 text-background/90"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                        {cert.skills.length > 3 && (
+                          <span className="text-[10px] px-2 py-0.5 text-background/60">
+                            +{cert.skills.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </CardWrapper>
               );
             })}
           </div>
