@@ -28,26 +28,27 @@ const mainEducation = [
 
 const certificates = [
   {
+    title: "Angular 19: estruture componentes com signals e controle de fluxo",
+    subtitle: "Componentes com signals e controle de fluxo",
+    issuer: "Alura",
+    date: "Fev 2026",
+    skills: ["Angular", "Signals", "TypeScript", "Control Flow"],
+    url: "https://cursos.alura.com.br/certificate/5e5bfbb6-b64a-4798-9319-0bc296b11801?lang=pt_BR",
+  },
+  {
     title: "SOLID com TypeScript",
     subtitle: "Aplicando boas práticas em orientação a objetos",
     issuer: "Alura",
     date: "Fev 2026",
     skills: ["Programação orientada a objetos (POO)"],
-    url: "#",
+    url: "https://cursos.alura.com.br/certificate/5c353302-74f6-4e7b-bfef-d675726a116e?lang=pt_BR",
   },
   {
     title: "Java Foundations",
     issuer: "Oracle",
     date: "Abr 2023",
     skills: ["Programação orientada a objetos (POO)"],
-    url: "#",
-  },
-  {
-    title: "Desenvolvimento Full Stack",
-    issuer: "Kenzie Academy Brasil",
-    date: "Mar 2023",
-    skills: ["TypeScript", "React.js", "Node.js", "SQL", "Git", "API REST", "POO", "Testes"],
-    url: "#",
+    url: "https://drive.google.com/file/d/1zonbXCfhoaWhSoKH2ABXj7mRBFxplHn_/view",
   },
 ];
 
@@ -148,39 +149,46 @@ export default function Education() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {certificates.map((cert, index) => (
-              <motion.a
-                key={cert.title + cert.issuer}
-                href={cert.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.5,
-                  delay: 1.0 + index * 0.1,
-                  ease: "easeOut",
-                }}
-                className="group p-5 rounded-xl border border-border/50 bg-background/50 backdrop-blur-sm
-                           hover:border-foreground/20 hover:bg-foreground/[0.02] hover:shadow-lg
-                           transition-all duration-300 flex flex-col"
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-                    {cert.issuer}
-                  </span>
-                  <span className="text-muted-foreground/30">·</span>
-                  <span className="text-[10px] text-muted-foreground/60">
-                    {cert.date}
-                  </span>
-                </div>
+            {certificates.map((cert, index) => {
+              const hasLink = cert.url && cert.url !== "#";
+              const CardWrapper = hasLink ? motion.a : motion.div;
+              const linkProps = hasLink
+                ? { href: cert.url, target: "_blank", rel: "noopener noreferrer" }
+                : {};
 
-                <div className="flex items-start justify-between gap-3 mb-1">
-                  <h3 className="text-sm font-semibold text-foreground/80 group-hover:text-foreground transition-colors duration-300">
-                    {cert.title}
-                  </h3>
-                  <ExternalLink className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground/30 group-hover:text-foreground/50 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </div>
+              return (
+                <CardWrapper
+                  key={cert.title + cert.issuer}
+                  {...linkProps}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 1.0 + index * 0.1,
+                    ease: "easeOut",
+                  }}
+                  className="group p-5 rounded-xl border border-border/60 bg-muted/20 backdrop-blur-sm
+                             hover:border-foreground/25 hover:bg-muted/30 hover:shadow-lg
+                             transition-all duration-300 flex flex-col"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                      {cert.issuer}
+                    </span>
+                    <span className="text-muted-foreground/30">·</span>
+                    <span className="text-[10px] text-muted-foreground/60">
+                      {cert.date}
+                    </span>
+                  </div>
+
+                  <div className="flex items-start justify-between gap-3 mb-1">
+                    <h3 className="text-sm font-semibold text-foreground/80 group-hover:text-foreground transition-colors duration-300">
+                      {cert.title}
+                    </h3>
+                    {hasLink && (
+                      <ExternalLink className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground/30 group-hover:text-foreground/50 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    )}
+                  </div>
                 
                 {cert.subtitle && (
                   <p className="text-xs text-muted-foreground/60 mb-3">
@@ -192,7 +200,7 @@ export default function Education() {
                   {cert.skills.slice(0, 3).map((skill) => (
                     <span
                       key={skill}
-                      className="text-[10px] px-2 py-0.5 rounded-full bg-foreground/5 border border-border/30 text-muted-foreground"
+                      className="text-[10px] px-2 py-0.5 rounded-full bg-foreground/[0.06] border border-border/40 text-muted-foreground"
                     >
                       {skill}
                     </span>
@@ -203,8 +211,9 @@ export default function Education() {
                     </span>
                   )}
                 </div>
-              </motion.a>
-            ))}
+              </CardWrapper>
+              );
+            })}
           </div>
 
         </motion.div>
