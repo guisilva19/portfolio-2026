@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { ExternalLink } from "lucide-react";
+import PageContainer from "@/components/PageContainer";
 
 const mainEducation = [
   {
@@ -54,7 +55,7 @@ const ALURA_PROFILE_URL = "https://cursos.alura.com.br/user/2003silvagui";
 
 export default function Education() {
   return (
-    <div className="relative z-[9999] min-h-screen px-6 sm:px-8 pt-16 md:pt-24 pb-20">
+    <PageContainer className="px-6 sm:px-8 pt-32 md:pt-28 pb-20">
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-wrap items-end justify-between gap-4 mb-12 md:mb-16">
           <h1 className="text-4xl md:text-6xl font-bold text-foreground opacity-0 animate-fade-in-up">
@@ -64,9 +65,10 @@ export default function Education() {
             href={ALURA_PROFILE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border
-                       text-sm font-medium text-foreground/80 hover:text-foreground
-                       hover:border-foreground/30 hover:bg-foreground/5
+            className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg
+                       bg-[oklch(0.145_0.025_250)] text-white
+                       dark:bg-white dark:text-[oklch(0.145_0.025_250)]
+                       text-sm font-medium hover:opacity-90
                        transition-all duration-300 opacity-0 animate-fade-in animation-delay-400"
           >
             <span>Perfil Alura</span>
@@ -207,6 +209,6 @@ export default function Education() {
 
         </motion.div>
       </div>
-    </div>
+    </PageContainer>
   );
 }
