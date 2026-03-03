@@ -20,7 +20,7 @@ const mainEducation = [
       "Bacharelado em Ciência da Computação, com formação em desenvolvimento de software, algoritmos, estruturas de dados, banco de dados e redes de computadores.",
   },
   {
-    title: "Desenvolvedor Web Full Stack",
+    title: "Desenvolvedor Full Stack",
     degree: "Formação Intensiva",
     institution: "Kenzie Academy Brasil",
     period: "Mar 2022 — Mar 2023",
@@ -87,7 +87,7 @@ export default function Education() {
         </div>
 
         {/* Formação acadêmica */}
-        <div className="space-y-12 md:space-y-16 mb-16 md:mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 xl:gap-12 mb-16 md:mb-[50px]">
           {mainEducation.map((item, index) => (
             <motion.div
               key={item.title}
