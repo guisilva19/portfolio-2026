@@ -98,14 +98,14 @@ export default function TypeAnimationMobile() {
     setTimeout(() => {
       gsap.set(".pov-mobile", { visibility: "visible" });
       gsap.to(".pov-mobile", { 
-        opacity: 1, 
+        opacity: 0.08, 
         x: 0,
         duration: 0.7, 
         ease: "power2.out" 
       });
-      gsap.to(".tray-mobile", { opacity: 1, duration: 0.6, ease: "power2.out" });
-      gsap.to(".die-mobile", { opacity: 1, duration: 0.6, ease: "power2.out", stagger: 0.02 });
-      gsap.to(".face-mobile", { opacity: 1, duration: 0.6, ease: "power2.out" });
+      gsap.to(".tray-mobile", { opacity: 0.08, duration: 0.6, ease: "power2.out" });
+      gsap.to(".die-mobile", { opacity: 0.08, duration: 0.6, ease: "power2.out", stagger: 0.02 });
+      gsap.to(".face-mobile", { opacity: 0.08, duration: 0.6, ease: "power2.out" });
     }, 300);
 
     // Animações mais suaves e otimizadas para mobile
