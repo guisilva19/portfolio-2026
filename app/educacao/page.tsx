@@ -1,13 +1,16 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ExternalLink } from "lucide-react";
-import Image from "next/image";
+import { ExternalLink, Search } from "lucide-react";
+import type { StaticImageData } from "next/image";
 import PageContainer from "@/components/PageContainer";
+import { CertificateCard } from "@/components/educacao/CertificateCard";
+import { useFilteredCertificates } from "@/hooks/use-filtered-certificates";
 
 import angularCert from "@/assets/certificados/angular.png";
 import solidCert from "@/assets/certificados/solid.png";
 import javaCert from "@/assets/certificados/java.png";
+import kenzieCert from "@/assets/certificados/kenzie.png";
 
 const mainEducation = [
   {
@@ -59,11 +62,30 @@ const certificates = [
     url: "https://drive.google.com/file/d/1zonbXCfhoaWhSoKH2ABXj7mRBFxplHn_/view",
     image: javaCert,
   },
+  {
+    title: "Desenvolvedor Full Stack",
+    subtitle: "Formação intensiva em desenvolvimento web",
+    issuer: "Kenzie Academy Brasil",
+    date: "Mar 2023",
+    skills: ["React", "Node.js", "JavaScript", "Python", "SQL"],
+    url: "#",
+    image: kenzieCert,
+  },
 ];
 
 const ALURA_PROFILE_URL = "https://cursos.alura.com.br/user/guisilva19";
 
 export default function Education() {
+  const {
+    search,
+    setSearch,
+    sortOrder,
+    setSortOrder,
+    issuerFilter,
+    setIssuerFilter,
+    issuerOptions,
+    filteredAndSortedCertificates,
+  } = useFilteredCertificates(certificates);
   return (
     <PageContainer className="px-6 sm:px-8 pt-32 md:pt-28 pb-20">
       <div className="max-w-[700px] md:max-w-[700px] xl:max-w-4xl mx-auto md:ml-64 xl:ml-auto">
@@ -150,99 +172,79 @@ export default function Education() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.9, ease: "easeOut" }}
         >
-          <div className="flex items-center gap-4 mb-8">
-            <span className="font-extra-black text-xs uppercase tracking-[0.25em] text-muted-foreground">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="font-extra-black text-xs uppercase tracking-[0.25em] text-muted-foreground shrink-0">
               Licenças e Certificados
             </span>
-            <div className="flex-1 h-px bg-border" />
+            <div className="flex-1 h-px bg-border min-w-0" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {certificates.map((cert, index) => {
-              const hasLink = cert.url && cert.url !== "#";
-              const CardWrapper = hasLink ? motion.a : motion.div;
-              const linkProps = hasLink
-                ? { href: cert.url, target: "_blank", rel: "noopener noreferrer" }
-                : {};
-
-              return (
-                <CardWrapper
-                  key={cert.title + cert.issuer}
-                  {...linkProps}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.5,
-                    delay: 1.0 + index * 0.1,
-                    ease: "easeOut",
-                  }}
-                  className="group relative overflow-hidden rounded-xl border border-border/60 aspect-[4/3] min-h-[180px]"
+          <div className="flex flex-col gap-4 mb-8 p-4 rounded-xl bg-muted/40 border border-border/50">
+            <div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+              <div className="relative flex-1 min-w-0">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                <input
+                  type="search"
+                  placeholder="Buscar..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-border/60 bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50"
+                />
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <label htmlFor="sort-cert" className="text-xs text-muted-foreground whitespace-nowrap">
+                  Ordenar:
+                </label>
+                <select
+                  id="sort-cert"
+                  value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value as "recentes" | "antigos")}
+                  className="px-3 py-2 text-sm rounded-lg border border-border/60 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50"
                 >
-                  {/* Imagem do certificado - sempre visível */}
-                  <div className="absolute inset-0 bg-muted/30 rounded-xl overflow-hidden">
-                    {cert.image ? (
-                      <Image
-                        src={cert.image}
-                        alt={cert.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
-                        <span className="text-4xl font-bold text-muted-foreground/30">{cert.issuer[0]}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Overlay com info - visível no hover - fundo inverso ao tema */}
-                  <div className="absolute -inset-px rounded-xl overflow-hidden bg-foreground/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col p-5 justify-between text-background">
-                    <div className="translate-y-8 group-hover:translate-y-0 transition-transform duration-500 ease-out flex flex-col justify-between flex-1 min-h-0 gap-3">
-                      <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-[10px] font-medium uppercase tracking-wider text-background/70">
-                            {cert.issuer}
-                          </span>
-                          <span className="text-background/40">·</span>
-                          <span className="text-[10px] text-background/60">
-                            {cert.date}
-                          </span>
-                        </div>
-                        <div className="flex items-start justify-between gap-2 mb-1">
-                          <h3 className="text-sm font-semibold text-background line-clamp-2">
-                            {cert.title}
-                          </h3>
-                          {hasLink && (
-                            <ExternalLink className="w-3.5 h-3.5 shrink-0 mt-0.5 text-background/60 group-hover:text-background transition-colors" />
-                          )}
-                        </div>
-                        {cert.subtitle && (
-                          <p className="text-xs text-background/80 line-clamp-2">
-                            {cert.subtitle}
-                          </p>
-                        )}
-                      </div>
-                      <div className="flex flex-wrap gap-1.5">
-                        {cert.skills.slice(0, 3).map((skill) => (
-                          <span
-                            key={skill}
-                            className="text-[10px] px-2 py-0.5 rounded-full bg-background/20 border border-background/30 text-background/90"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                        {cert.skills.length > 3 && (
-                          <span className="text-[10px] px-2 py-0.5 text-background/60">
-                            +{cert.skills.length - 3}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </CardWrapper>
-              );
-            })}
+                  <option value="recentes">Mais recentes</option>
+                  <option value="antigos">Menos recentes</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {issuerOptions.map(({ value, label }) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setIssuerFilter(value)}
+                  className={`cursor-pointer px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                    issuerFilter === value
+                      ? "bg-foreground text-background"
+                      : "bg-muted/80 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {filteredAndSortedCertificates.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-8 text-center">
+              Nenhum certificado encontrado.
+            </p>
+          ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredAndSortedCertificates.map((cert, index) => (
+              <CertificateCard
+                key={`${cert.title}-${cert.issuer}`}
+                title={cert.title}
+                subtitle={cert.subtitle}
+                issuer={cert.issuer}
+                date={cert.date}
+                skills={cert.skills}
+                url={cert.url}
+                image={cert.image as StaticImageData}
+                index={index}
+              />
+            ))}
+          </div>
+          )}
 
         </motion.div>
       </div>
