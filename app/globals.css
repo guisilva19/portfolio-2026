@@ -117,8 +117,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    transition: background-color 0.35s ease, color 0.35s ease;
+  }
   body {
     @apply bg-background text-foreground;
+    transition: background-color 0.35s ease, color 0.35s ease;
   }
 }
 
@@ -210,13 +214,7 @@
   --theme-toggle-icon: oklch(0.985 0 0);
   --theme-toggle-border: rgba(255 255 255 / 0.25);
   --theme-toggle-rotate: 1turn;
-  --theme-bg-scale: 1.25;
   --toggle-label-txt: "light";
-}
-
-/* Light→Dark: após expandir, recolher máscara para revelar a página dark */
-:root:has(input#theme:checked)[data-theme-mask="reveal"] {
-  --theme-bg-scale: 0;
 }
 
 .sr-only {
@@ -310,34 +308,6 @@ input#theme:focus-within ~ label,
 
 .theme-toggle > svg:first-child {
   scale: var(--theme-toggle-light-scale, 0);
-}
-
-.theme-mask {
-  position: fixed;
-  display: grid;
-  isolation: isolate;
-  overflow: hidden;
-  inset: 0;
-  grid-template-rows: repeat(25, 1fr);
-  pointer-events: none;
-  z-index: -1;
-  contain: strict;
-}
-
-.theme-mask > div {
-  background-color: oklch(0.145 0.025 250);
-  scale: var(--theme-bg-scale, 0);
-  transition: transform 300ms ease-in-out, scale 300ms ease-in-out;
-  transition-delay: calc(var(--i) * 15ms);
-  will-change: scale;
-  transform: translateZ(0);
-}
-
-@media (max-width: 640px) {
-  .theme-mask > div {
-    transition: transform 200ms ease-in-out, scale 200ms ease-in-out;
-    transition-delay: calc(var(--i) * 10ms);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

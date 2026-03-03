@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export default function ThemeToggle() {
   const [isDark, setIsDark] = useState(false);
@@ -14,52 +14,22 @@ export default function ThemeToggle() {
     
     if (shouldBeDark) {
       document.documentElement.classList.add("dark");
-      document.documentElement.setAttribute("data-theme-mask", "reveal");
     } else {
       document.documentElement.classList.remove("dark");
-      document.documentElement.removeAttribute("data-theme-mask");
     }
   }, []);
 
   const toggleTheme = useCallback(() => {
     setIsDark(prev => {
       const newTheme = !prev;
-      
       if (newTheme) {
-        // Light → Dark: expandir máscara primeiro, depois trocar tema e recolher
-        document.documentElement.removeAttribute("data-theme-mask");
-        requestAnimationFrame(() => {
-          // Fase 1: máscara expande sobre a página light
-          const maskDuration = 400;
-          setTimeout(() => {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-            // Fase 2: recolher máscara para revelar a página dark
-            document.documentElement.setAttribute("data-theme-mask", "reveal");
-          }, maskDuration);
-        });
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
       } else {
-        // Dark → Light: trocar tema imediatamente, máscara recolhe (já funciona)
         document.documentElement.classList.remove("dark");
-        document.documentElement.removeAttribute("data-theme-mask");
         localStorage.setItem("theme", "light");
       }
-      
       return newTheme;
-    });
-  }, []);
-
-  // Memoize os elementos do mask para evitar recriação
-  const maskElements = useMemo(() => {
-    const center = 12;
-    return Array.from({ length: 25 }).map((_, i) => {
-      const distanceFromCenter = Math.abs(i - center);
-      return (
-        <div 
-          key={i} 
-          style={{ "--i": distanceFromCenter } as React.CSSProperties}
-        />
-      );
     });
   }, []);
 
@@ -106,10 +76,6 @@ export default function ThemeToggle() {
           <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
         </svg>
       </label>
-
-      <div className="theme-mask">
-        {maskElements}
-      </div>
     </>
   );
 }
