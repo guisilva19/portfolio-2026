@@ -50,15 +50,29 @@ const certificates = [
   },
 ];
 
-const ALURA_PROFILE_URL = "https://cursos.alura.com.br/user/guisilva19";
+const ALURA_PROFILE_URL = "https://cursos.alura.com.br/user/2003silvagui";
 
 export default function Education() {
   return (
-    <div className="relative min-h-screen px-6 sm:px-8 pt-24 md:pt-32 pb-20">
+    <div className="relative z-[9999] min-h-screen px-6 sm:px-8 pt-16 md:pt-24 pb-20">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-12 md:mb-16 opacity-0 animate-fade-in-up">
-          Educação
-        </h1>
+        <div className="flex flex-wrap items-end justify-between gap-4 mb-12 md:mb-16">
+          <h1 className="text-4xl md:text-6xl font-bold text-foreground opacity-0 animate-fade-in-up">
+            Educação
+          </h1>
+          <a
+            href={ALURA_PROFILE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border
+                       text-sm font-medium text-foreground/80 hover:text-foreground
+                       hover:border-foreground/30 hover:bg-foreground/5
+                       transition-all duration-300 opacity-0 animate-fade-in animation-delay-400"
+          >
+            <span>Perfil Alura</span>
+            <ExternalLink className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+        </div>
 
         {/* Formação acadêmica */}
         <div className="space-y-12 md:space-y-16 mb-16 md:mb-20">
@@ -124,70 +138,70 @@ export default function Education() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.9, ease: "easeOut" }}
         >
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4 mb-8">
             <span className="font-extra-black text-xs uppercase tracking-[0.25em] text-muted-foreground">
               Licenças e Certificados
             </span>
-            <a
-              href={ALURA_PROFILE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-1.5 text-muted-foreground
-                         hover:text-foreground transition-colors duration-300"
-            >
-              <span className="font-extra-black text-[10px] uppercase tracking-[0.15em]">
-                Perfil Alura
-              </span>
-              <ExternalLink className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+            <div className="flex-1 h-px bg-border" />
           </div>
-          <div className="h-px bg-border mt-4 mb-6" />
 
-          <div className="space-y-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {certificates.map((cert, index) => (
-              <motion.div
+              <motion.a
                 key={cert.title + cert.issuer}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
+                href={cert.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  duration: 0.4,
-                  delay: 1.0 + index * 0.08,
+                  duration: 0.5,
+                  delay: 1.0 + index * 0.1,
                   ease: "easeOut",
                 }}
-                className="group py-5 border-b border-border/30 hover:border-border/60 transition-colors duration-300"
+                className="group p-5 rounded-xl border border-border/50 bg-background/50 backdrop-blur-sm
+                           hover:border-foreground/20 hover:bg-foreground/[0.02] hover:shadow-lg
+                           transition-all duration-300 flex flex-col"
               >
-                <a
-                  href={cert.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-start justify-between gap-4"
-                >
-                  <div className="min-w-0">
-                    <span className="inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-foreground/70 group-hover:text-foreground transition-colors duration-300">
-                      {cert.title}
-                      <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shrink-0" />
-                    </span>
-                    {cert.subtitle && (
-                      <p className="text-xs text-muted-foreground/60 mt-0.5">
-                        {cert.subtitle}
-                      </p>
-                    )}
-                    <div className="flex flex-wrap gap-1.5 mt-2">
-                      {cert.skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="text-[10px] px-2 py-0.5 rounded-full border border-border/50 text-muted-foreground"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <span className="text-xs text-muted-foreground shrink-0 mt-0.5">
-                    {cert.issuer} · {cert.date}
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                    {cert.issuer}
                   </span>
-                </a>
-              </motion.div>
+                  <span className="text-muted-foreground/30">·</span>
+                  <span className="text-[10px] text-muted-foreground/60">
+                    {cert.date}
+                  </span>
+                </div>
+
+                <div className="flex items-start justify-between gap-3 mb-1">
+                  <h3 className="text-sm font-semibold text-foreground/80 group-hover:text-foreground transition-colors duration-300">
+                    {cert.title}
+                  </h3>
+                  <ExternalLink className="w-3.5 h-3.5 shrink-0 mt-0.5 text-muted-foreground/30 group-hover:text-foreground/50 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
+                
+                {cert.subtitle && (
+                  <p className="text-xs text-muted-foreground/60 mb-3">
+                    {cert.subtitle}
+                  </p>
+                )}
+
+                <div className="flex flex-wrap gap-1.5 mt-auto pt-3">
+                  {cert.skills.slice(0, 3).map((skill) => (
+                    <span
+                      key={skill}
+                      className="text-[10px] px-2 py-0.5 rounded-full bg-foreground/5 border border-border/30 text-muted-foreground"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                  {cert.skills.length > 3 && (
+                    <span className="text-[10px] px-2 py-0.5 text-muted-foreground/50">
+                      +{cert.skills.length - 3}
+                    </span>
+                  )}
+                </div>
+              </motion.a>
             ))}
           </div>
 
