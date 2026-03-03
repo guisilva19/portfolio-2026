@@ -15,8 +15,7 @@ export default function TypeAnimationMobile() {
     gsap.set(".die-mobile", { opacity: 0 });
     gsap.set(".face-mobile", { opacity: 0 });
 
-    // Reduzido de 35 para 25 elementos para melhor performance
-    const n = 25;
+    const n = 15;
     const spacing = 26;
     
     const rots = [

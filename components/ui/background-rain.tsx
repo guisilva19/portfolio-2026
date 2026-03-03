@@ -3,33 +3,26 @@ import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
 import React, { useRef, useState, useEffect, useMemo } from "react";
 
-// Beams para desktop (15 beams)
+// Beams para desktop (10 beams - otimizado para performance)
 const desktopBeams = [
-  { initialX: 10, translateX: 10, duration: 7, repeatDelay: 3, delay: 2 },
-  { initialX: 600, translateX: 600, duration: 3, repeatDelay: 3, delay: 4 },
-  { initialX: 100, translateX: 100, duration: 7, repeatDelay: 7, className: "h-6" },
-  { initialX: 400, translateX: 400, duration: 5, repeatDelay: 14, delay: 4 },
-  { initialX: 800, translateX: 800, duration: 11, repeatDelay: 2, className: "h-20" },
-  { initialX: 1000, translateX: 1000, duration: 4, repeatDelay: 2, className: "h-12" },
-  { initialX: 1200, translateX: 1200, duration: 6, repeatDelay: 4, delay: 2, className: "h-6" },
-  { initialX: 300, translateX: 300, duration: 5, repeatDelay: 5, delay: 1, className: "h-8" },
+  { initialX: 100, translateX: 100, duration: 7, repeatDelay: 5, delay: 2, className: "h-6" },
+  { initialX: 400, translateX: 400, duration: 6, repeatDelay: 4, delay: 1 },
   { initialX: 700, translateX: 700, duration: 8, repeatDelay: 3, delay: 3, className: "h-10" },
-  { initialX: 900, translateX: 900, duration: 6, repeatDelay: 4, delay: 1 },
-  { initialX: 1400, translateX: 1400, duration: 7, repeatDelay: 3, delay: 2, className: "h-10" },
-  { initialX: 1600, translateX: 1600, duration: 5, repeatDelay: 6, delay: 1, className: "h-8" },
-  { initialX: 1800, translateX: 1800, duration: 6, repeatDelay: 4, delay: 3, className: "h-12" },
-  { initialX: 1500, translateX: 1500, duration: 8, repeatDelay: 2, delay: 4 },
-  { initialX: 1700, translateX: 1700, duration: 4, repeatDelay: 5, delay: 2, className: "h-6" },
+  { initialX: 1000, translateX: 1000, duration: 5, repeatDelay: 4, delay: 2, className: "h-8" },
+  { initialX: 1300, translateX: 1300, duration: 7, repeatDelay: 4, delay: 1 },
+  { initialX: 300, translateX: 300, duration: 6, repeatDelay: 5, delay: 4, className: "h-6" },
+  { initialX: 600, translateX: 600, duration: 8, repeatDelay: 3, delay: 2 },
+  { initialX: 900, translateX: 900, duration: 6, repeatDelay: 5, delay: 3, className: "h-8" },
+  { initialX: 1200, translateX: 1200, duration: 7, repeatDelay: 4, delay: 1 },
+  { initialX: 1500, translateX: 1500, duration: 6, repeatDelay: 5, delay: 2, className: "h-6" },
 ];
 
-// Beams reduzidos para mobile (6 beams - menos stress na GPU)
+// Beams reduzidos para mobile (4 beams - menos stress na GPU)
 const mobileBeams = [
-  { initialX: 30, translateX: 30, duration: 8, repeatDelay: 4, delay: 2 },
-  { initialX: 120, translateX: 120, duration: 6, repeatDelay: 5, delay: 1, className: "h-6" },
-  { initialX: 200, translateX: 200, duration: 7, repeatDelay: 4, delay: 3 },
-  { initialX: 280, translateX: 280, duration: 9, repeatDelay: 3, delay: 2, className: "h-8" },
-  { initialX: 350, translateX: 350, duration: 6, repeatDelay: 5, delay: 4 },
-  { initialX: 80, translateX: 80, duration: 8, repeatDelay: 4, delay: 1, className: "h-6" },
+  { initialX: 80, translateX: 80, duration: 8, repeatDelay: 4, delay: 2, className: "h-6" },
+  { initialX: 200, translateX: 200, duration: 7, repeatDelay: 5, delay: 1 },
+  { initialX: 280, translateX: 280, duration: 9, repeatDelay: 4, delay: 3, className: "h-6" },
+  { initialX: 350, translateX: 350, duration: 8, repeatDelay: 5, delay: 2 },
 ];
 
 export const BackgroundBeamsWithCollision = ({
@@ -68,6 +61,7 @@ export const BackgroundBeamsWithCollision = ({
             beamOptions={beam}
             containerRef={containerRef}
             parentRef={parentRef}
+            disableCollision={isMobile}
           />
         ))}
         <div
@@ -93,6 +87,7 @@ const CollisionMechanism = React.forwardRef<
   {
     containerRef: React.RefObject<HTMLDivElement | null>;
     parentRef: React.RefObject<HTMLDivElement | null>;
+    disableCollision?: boolean;
     beamOptions?: {
       initialX?: number;
       translateX?: number;
@@ -105,7 +100,7 @@ const CollisionMechanism = React.forwardRef<
       repeatDelay?: number;
     };
   }
->(({ parentRef, containerRef, beamOptions = {} }, ref) => {
+>(({ parentRef, containerRef, beamOptions = {}, disableCollision = false }, ref) => {
   const beamRef = useRef<HTMLDivElement>(null);
   const [collision, setCollision] = useState<{
     detected: boolean;
@@ -118,6 +113,8 @@ const CollisionMechanism = React.forwardRef<
   const [cycleCollisionDetected, setCycleCollisionDetected] = useState(false);
 
   useEffect(() => {
+    if (disableCollision) return;
+    
     let animationFrameId: number;
     let lastCheck = 0;
     const checkInterval = 80;
@@ -158,7 +155,7 @@ const CollisionMechanism = React.forwardRef<
     animationFrameId = requestAnimationFrame(checkCollision);
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, [cycleCollisionDetected, containerRef]);
+  }, [cycleCollisionDetected, containerRef, disableCollision]);
 
   useEffect(() => {
     if (collision.detected && collision.coordinates) {
@@ -206,7 +203,7 @@ const CollisionMechanism = React.forwardRef<
         style={{ transform: "translateZ(0)" }}
       />
       <AnimatePresence>
-        {collision.detected && collision.coordinates && (
+        {!disableCollision && collision.detected && collision.coordinates && (
           <Explosion
             key={`${collision.coordinates.x}-${collision.coordinates.y}`}
             className=""

@@ -17,7 +17,7 @@ export default function TypeAnimation() {
 
     const isTablet = window.innerWidth > 480 && window.innerWidth <= 768;
     
-    const n = isTablet ? 25 : 40;
+    const n = isTablet ? 18 : 22;
     const spacing = isTablet ? 38 : 56;
     
     const rots = [
