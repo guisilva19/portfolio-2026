@@ -31,7 +31,7 @@ export default function TypeAnimationMobile() {
     
     gsap.set(".face-mobile", {
       z: zDepth,
-      rotateY: (i) => rots[i].ry,
+      rotateY: (i) => rots[i % rots.length].ry,
       transformOrigin: `50% 50% ${originDepth}px`,
       force3D: true,
       opacity: 0,
@@ -98,14 +98,14 @@ export default function TypeAnimationMobile() {
     setTimeout(() => {
       gsap.set(".pov-mobile", { visibility: "visible" });
       gsap.to(".pov-mobile", { 
-        opacity: 0.08, 
+        opacity: 0.35, 
         x: 0,
         duration: 0.7, 
         ease: "power2.out" 
       });
-      gsap.to(".tray-mobile", { opacity: 0.08, duration: 0.6, ease: "power2.out" });
-      gsap.to(".die-mobile", { opacity: 0.08, duration: 0.6, ease: "power2.out", stagger: 0.02 });
-      gsap.to(".face-mobile", { opacity: 0.08, duration: 0.6, ease: "power2.out" });
+      gsap.to(".tray-mobile", { opacity: 0.35, duration: 0.6, ease: "power2.out" });
+      gsap.to(".die-mobile", { opacity: 0.35, duration: 0.6, ease: "power2.out", stagger: 0.02 });
+      gsap.to(".face-mobile", { opacity: 0.35, duration: 0.6, ease: "power2.out" });
     }, 300);
 
     // Animações mais suaves e otimizadas para mobile
@@ -183,7 +183,7 @@ export default function TypeAnimationMobile() {
         }
       `}</style>
 
-      <div className="pov-mobile fixed -right-50 -top-60 -rotate-30 z-1" ref={povRef}>
+      <div className="pov-mobile fixed -right-24 -top-48 -rotate-30 z-[5]" ref={povRef}>
         <div className="tray-mobile" ref={trayRef}>
           <div className="die-mobile">
             <div className="cube-mobile">

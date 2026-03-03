@@ -32,7 +32,7 @@ export default function TypeAnimation() {
     
     gsap.set(".face", {
       z: zDepth,
-      rotateY: (i) => rots[i].ry,
+      rotateY: (i) => rots[i % rots.length].ry,
       transformOrigin: `50% 50% ${originDepth}px`,
       opacity: 0,
     });
