@@ -52,7 +52,7 @@ const certificates = [
   },
 ];
 
-const ALURA_PROFILE_URL = "https://cursos.alura.com.br/user/2003silvagui";
+const ALURA_PROFILE_URL = "https://cursos.alura.com.br/user/guisilva19";
 
 export default function Education() {
   return (
