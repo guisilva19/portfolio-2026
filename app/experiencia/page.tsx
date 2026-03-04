@@ -2,7 +2,6 @@
 
 import { motion } from "motion/react";
 import { Download, ExternalLink } from "lucide-react";
-import Image from "next/image";
 import PageContainer from "@/components/PageContainer";
 
 const CV_URL = "/cv.pdf";
@@ -135,24 +134,7 @@ export default function Experience() {
                 </div>
 
                 <div className="flex-1 min-w-0 pt-0.5">
-              <div className="flex gap-3 mb-2">
-                {exp.website && (
-                  <div className="relative w-10 h-10 shrink-0 rounded-lg overflow-hidden bg-muted/50 border border-border/60">
-                    <Image
-                      src={`https://logo.clearbit.com/${new URL(exp.website).hostname}`}
-                      alt={exp.company}
-                      fill
-                      className="object-contain p-1"
-                      sizes="40px"
-                      onError={(e) => {
-                        const parent = e.currentTarget.parentElement;
-                        if (parent) parent.style.display = "none";
-                      }}
-                    />
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2 mb-2">
                     <h2 className="text-xl md:text-2xl font-bold text-foreground">
                       {exp.role} ·{" "}
                       {exp.website ? (
@@ -173,8 +155,6 @@ export default function Experience() {
                       {exp.period}
                     </span>
                   </div>
-                </div>
-              </div>
 
               <ul className="space-y-2 mb-3">
                 {exp.highlights.map((highlight, i) => {
