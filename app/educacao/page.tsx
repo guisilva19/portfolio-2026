@@ -1,11 +1,13 @@
 "use client";
 
+import { useCallback } from "react";
 import { motion } from "motion/react";
 import { ExternalLink, Search } from "lucide-react";
 import type { StaticImageData } from "next/image";
 import PageContainer from "@/components/PageContainer";
 import { CertificateCard } from "@/components/educacao/CertificateCard";
 import { useFilteredCertificates } from "@/hooks/use-filtered-certificates";
+import { useInView } from "@/hooks/use-in-view";
 
 import angularCert from "@/assets/certificados/angular.png";
 import solidCert from "@/assets/certificados/solid.png";
@@ -86,6 +88,28 @@ export default function Education() {
     issuerOptions,
     filteredAndSortedCertificates,
   } = useFilteredCertificates(certificates);
+
+  const { ref: certificatesRef, isInView } = useInView();
+
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),
+    [setSearch]
+  );
+
+  const handleSortChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) =>
+      setSortOrder(e.target.value as "recentes" | "antigos"),
+    [setSortOrder]
+  );
+
+  const handleIssuerClick = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      const value = e.currentTarget.dataset.value;
+      if (value) setIssuerFilter(value);
+    },
+    [setIssuerFilter]
+  );
+
   return (
     <PageContainer className="px-6 sm:px-8 pt-32 md:pt-28 pb-20">
       <div className="max-w-[700px] md:max-w-[700px] xl:max-w-4xl mx-auto md:ml-64 xl:ml-auto">
@@ -187,7 +211,7 @@ export default function Education() {
                   type="search"
                   placeholder="Buscar..."
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={handleSearchChange}
                   className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-border/60 bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/50"
                 />
               </div>
@@ -198,7 +222,7 @@ export default function Education() {
                 <select
                   id="sort-cert"
                   value={sortOrder}
-                  onChange={(e) => setSortOrder(e.target.value as "recentes" | "antigos")}
+                  onChange={handleSortChange}
                   className="px-3 py-2 text-sm rounded-lg border border-border/60 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50"
                 >
                   <option value="recentes">Mais recentes</option>
@@ -211,7 +235,8 @@ export default function Education() {
                 <button
                   key={value}
                   type="button"
-                  onClick={() => setIssuerFilter(value)}
+                  data-value={value}
+                  onClick={handleIssuerClick}
                   className={`cursor-pointer px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
                     issuerFilter === value
                       ? "bg-foreground text-background"
@@ -229,20 +254,30 @@ export default function Education() {
               Nenhum certificado encontrado.
             </p>
           ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredAndSortedCertificates.map((cert, index) => (
-              <CertificateCard
-                key={`${cert.title}-${cert.issuer}`}
-                title={cert.title}
-                subtitle={cert.subtitle}
-                issuer={cert.issuer}
-                date={cert.date}
-                skills={cert.skills}
-                url={cert.url}
-                image={cert.image as StaticImageData}
-                index={index}
-              />
-            ))}
+          <div
+            ref={certificatesRef}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 min-h-[360px]"
+          >
+            {isInView
+              ? filteredAndSortedCertificates.map((cert, index) => (
+                  <CertificateCard
+                    key={`${cert.title}-${cert.issuer}`}
+                    title={cert.title}
+                    subtitle={cert.subtitle}
+                    issuer={cert.issuer}
+                    date={cert.date}
+                    skills={cert.skills}
+                    url={cert.url}
+                    image={cert.image as StaticImageData}
+                    index={index}
+                  />
+                ))
+              : Array.from({ length: filteredAndSortedCertificates.length }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="rounded-xl border border-border/60 aspect-4/3 min-h-[180px] bg-muted/30 animate-pulse"
+                  />
+                ))}
           </div>
           )}
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import { motion } from "motion/react";
 import { ExternalLink } from "lucide-react";
 import Image from "next/image";
@@ -16,7 +17,7 @@ type CertificateCardProps = {
   index: number;
 };
 
-export function CertificateCard({
+function CertificateCardComponent({
   title,
   subtitle,
   issuer,
@@ -32,16 +33,21 @@ export function CertificateCard({
     ? { href: url, target: "_blank", rel: "noopener noreferrer" as const }
     : {};
 
+  const transition = useMemo(
+    () => ({
+      duration: 0.25,
+      delay: index * 0.03,
+      ease: "easeOut" as const,
+    }),
+    [index]
+  );
+
   return (
     <CardWrapper
       {...linkProps}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{
-        duration: 0.25,
-        delay: index * 0.03,
-        ease: "easeOut",
-      }}
+      transition={transition}
       className="group relative overflow-hidden rounded-xl border border-border/60 aspect-4/3 min-h-[180px]"
     >
       <div className="absolute inset-0 bg-muted/30 rounded-xl overflow-hidden">
@@ -106,3 +112,5 @@ export function CertificateCard({
     </CardWrapper>
   );
 }
+
+export const CertificateCard = memo(CertificateCardComponent);
