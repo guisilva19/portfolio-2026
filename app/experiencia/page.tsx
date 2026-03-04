@@ -106,19 +106,35 @@ export default function Experience() {
           </a>
         </div>
 
-        <div className="flex flex-col gap-6 md:gap-8">
-          {experiences.map((exp, index) => (
-            <motion.article
-              key={`${exp.company}-${exp.period}`}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.2 + index * 0.15,
-                ease: "easeOut",
-              }}
-              className="relative"
-            >
+        <div className="relative">
+          {/* Linha vertical da timeline */}
+          <div
+            className="absolute left-[5px] top-2 bottom-2 w-px bg-border/40"
+            aria-hidden
+          />
+
+          <div className="flex flex-col gap-0">
+            {experiences.map((exp, index) => (
+              <motion.article
+                key={`${exp.company}-${exp.period}`}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.6,
+                  delay: 0.15 + index * 0.1,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
+                className="relative flex gap-6 py-8 first:pt-0 last:pb-0"
+              >
+                {/* Ponto da timeline */}
+                <div className="relative z-10 flex shrink-0 flex-col items-center pt-1.5">
+                  <span
+                    className="h-2.5 w-2.5 rounded-full border-2 border-foreground/40 bg-background
+                               ring-4 ring-background"
+                  />
+                </div>
+
+                <div className="flex-1 min-w-0 pt-0.5">
               <div className="flex gap-3 mb-2">
                 {exp.website && (
                   <div className="relative w-10 h-10 shrink-0 rounded-lg overflow-hidden bg-muted/50 border border-border/60">
@@ -153,35 +169,39 @@ export default function Experience() {
                         exp.company
                       )}
                     </h2>
-                    <span className="text-xs text-muted-foreground uppercase tracking-wider shrink-0">
+                    <span className="font-extra-black text-xs uppercase tracking-[0.25em] text-muted-foreground shrink-0">
                       {exp.period}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <ul className="space-y-1.5 mb-3">
+              <ul className="space-y-2 mb-3">
                 {exp.highlights.map((highlight, i) => {
                   if (exp.projectLink && highlight.includes(exp.projectLink.word)) {
                     const parts = highlight.split(exp.projectLink.word);
                     return (
-                      <li key={i} className="text-sm text-foreground/80 leading-relaxed pl-4 border-l-2 border-border/60">
-                        {parts[0]}
-                        <a
-                          href={exp.projectLink.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-foreground underline hover:opacity-80 transition-opacity"
-                        >
-                          {exp.projectLink.word}
-                        </a>
-                        {parts[1]}
+                      <li key={i} className="flex gap-3 text-sm text-foreground/80 leading-relaxed">
+                        <span className="w-1.5 h-1.5 shrink-0 mt-2 rounded-full bg-muted-foreground/40" />
+                        <span>
+                          {parts[0]}
+                          <a
+                            href={exp.projectLink.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-foreground underline hover:opacity-80 transition-opacity"
+                          >
+                            {exp.projectLink.word}
+                          </a>
+                          {parts[1]}
+                        </span>
                       </li>
                     );
                   }
                   return (
-                    <li key={i} className="text-sm text-foreground/80 leading-relaxed pl-4 border-l-2 border-border/60">
-                      {highlight}
+                    <li key={i} className="flex gap-3 text-sm text-foreground/80 leading-relaxed">
+                      <span className="w-1.5 h-1.5 shrink-0 mt-2 rounded-full bg-muted-foreground/40" />
+                      <span>{highlight}</span>
                     </li>
                   );
                 })}
@@ -191,14 +211,16 @@ export default function Experience() {
                 {exp.stack.map((tech) => (
                   <span
                     key={tech}
-                    className="text-[11px] px-2 py-0.5 rounded-full bg-muted/80 text-muted-foreground border border-border/60"
+                    className="text-xs px-2.5 py-1 rounded-full bg-muted/80 text-foreground/70 border border-border/60"
                   >
                     {tech}
                   </span>
                 ))}
               </div>
-            </motion.article>
-          ))}
+                </div>
+              </motion.article>
+            ))}
+          </div>
         </div>
       </div>
     </PageContainer>
