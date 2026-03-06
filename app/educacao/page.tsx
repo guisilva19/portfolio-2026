@@ -32,7 +32,9 @@ export default function Education() {
 
   const handleSortChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) =>
-      setSortOrder(e.target.value as "recentes" | "antigos"),
+      setSortOrder(
+        e.target.value as "relevancia" | "recentes" | "antigos"
+      ),
     [setSortOrder]
   );
 
@@ -159,6 +161,7 @@ export default function Education() {
                   onChange={handleSortChange}
                   className="px-3 py-2 text-sm rounded-lg border border-border/60 bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/50"
                 >
+                  <option value="relevancia">Relevância</option>
                   <option value="recentes">Mais recentes</option>
                   <option value="antigos">Menos recentes</option>
                 </select>

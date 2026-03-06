@@ -26,7 +26,9 @@ export function useFilteredCertificates<T extends Certificate>(
   certificates: T[]
 ) {
   const [search, setSearch] = useState("");
-  const [sortOrder, setSortOrder] = useState<"recentes" | "antigos">("recentes");
+  const [sortOrder, setSortOrder] = useState<
+    "relevancia" | "recentes" | "antigos"
+  >("relevancia");
   const [issuerFilter, setIssuerFilter] = useState<string>("Todos");
 
   const issuerOptions = useMemo(() => {
@@ -57,6 +59,8 @@ export function useFilteredCertificates<T extends Certificate>(
           cert.skills.some((s) => s.toLowerCase().includes(q))
       );
     }
+
+    if (sortOrder === "relevancia") return list;
 
     return [...list].sort((a, b) => {
       const dateA = parseDateForSort(a.date);
