@@ -22,7 +22,9 @@ export type Certificate = {
   image: unknown;
 };
 
-export function useFilteredCertificates(certificates: Certificate[]) {
+export function useFilteredCertificates<T extends Certificate>(
+  certificates: T[]
+) {
   const [search, setSearch] = useState("");
   const [sortOrder, setSortOrder] = useState<"recentes" | "antigos">("recentes");
   const [issuerFilter, setIssuerFilter] = useState<string>("Todos");
@@ -38,7 +40,7 @@ export function useFilteredCertificates(certificates: Certificate[]) {
     ];
   }, [certificates]);
 
-  const filteredAndSortedCertificates = useMemo(() => {
+  const filteredAndSortedCertificates = useMemo((): T[] => {
     const q = search.trim().toLowerCase();
     let list = certificates;
 
