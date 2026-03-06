@@ -2,8 +2,11 @@ import type { StaticImageData } from "next/image";
 
 import angularCert from "@/assets/certificados/angular.png";
 import dockerCert from "@/assets/certificados/docker.png";
+import estruturasDadosCert from "@/assets/certificados/dados.png";
+import iaCert from "@/assets/certificados/ia.png";
 import javaCert from "@/assets/certificados/java.png";
 import kenzieCert from "@/assets/certificados/kenzie.png";
+import modelagemCert from "@/assets/certificados/modelagem.png";
 import solidCert from "@/assets/certificados/solid.png";
 
 export type EducationItem = {
@@ -50,6 +53,15 @@ export const mainEducation: EducationItem[] = [
 
 export const certificates: CertificateItem[] = [
   {
+    title: "Inteligência artificial",
+    subtitle: "Fundamentos e aplicações",
+    issuer: "UniFG Centro Universitário",
+    date: "Jul 2025",
+    skills: ["Inteligência artificial", "Machine Learning"],
+    url: "#",
+    image: iaCert,
+  },
+  {
     title: "Docker: criando e gerenciando",
     subtitle: "Criando e gerenciando imagens",
     issuer: "Alura",
@@ -75,6 +87,24 @@ export const certificates: CertificateItem[] = [
     skills: ["SOLID", "Programação orientada a objetos (POO)"],
     url: "https://cursos.alura.com.br/certificate/5c353302-74f6-4e7b-bfef-d675726a116e?lang=pt_BR",
     image: solidCert,
+  },
+  {
+    title: "Estruturas de dados e análise de algoritmos",
+    subtitle: "160 horas",
+    issuer: "UniFG Centro Universitário",
+    date: "Dez 2025",
+    skills: ["Estruturas de dados", "Algoritmos"],
+    url: "#",
+    image: estruturasDadosCert,
+  },
+  {
+    title: "Modelagem de software",
+    subtitle: "160 horas",
+    issuer: "UniFG Centro Universitário",
+    date: "Jul 2023",
+    skills: ["Modelagem", "UML", "Engenharia de software"],
+    url: "#",
+    image: modelagemCert,
   },
   {
     title: "Java Foundations",
