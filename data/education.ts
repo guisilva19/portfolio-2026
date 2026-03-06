@@ -1,9 +1,10 @@
 import type { StaticImageData } from "next/image";
 
 import angularCert from "@/assets/certificados/angular.png";
-import solidCert from "@/assets/certificados/solid.png";
+import dockerCert from "@/assets/certificados/docker.png";
 import javaCert from "@/assets/certificados/java.png";
 import kenzieCert from "@/assets/certificados/kenzie.png";
+import solidCert from "@/assets/certificados/solid.png";
 
 export type EducationItem = {
   title: string;
@@ -48,6 +49,15 @@ export const mainEducation: EducationItem[] = [
 ];
 
 export const certificates: CertificateItem[] = [
+  {
+    title: "Docker: criando e gerenciando",
+    subtitle: "Criando e gerenciando imagens",
+    issuer: "Alura",
+    date: "Mar 2026",
+    skills: ["Docker", "Containers"],
+    url: "#",
+    image: dockerCert,
+  },
   {
     title: "Angular 19: estruture componentes com signals e controle de fluxo",
     subtitle: "Componentes com signals e controle de fluxo",
