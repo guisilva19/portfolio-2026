@@ -10,7 +10,7 @@ export const reactServerComponents: BlogPost = {
   title: "Por que você deveria usar React Server Components",
   summary:
     "RSC mudaram completamente a forma como penso sobre renderização. Menos JavaScript no cliente, dados mais perto do servidor — e tudo sem sacrificar a experiência do usuário.",
-  date: "2025-03-10",
+  date: "2026-04-02",
   readTime: "5 min",
   tags: ["React Server Components", "Performance", "App Router"],
   coverImage: capaImg,
