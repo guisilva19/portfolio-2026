@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "motion/react";
-import { Linkedin } from "lucide-react";
+import { Linkedin, Search } from "lucide-react";
 import PageContainer from "@/components/PageContainer";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { blogPosts } from "@/data/blog";
@@ -11,6 +11,7 @@ const ALL_TAG = "Todos";
 
 export default function Blog() {
   const [activeTag, setActiveTag] = useState<string>(ALL_TAG);
+  const [query, setQuery] = useState("");
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
@@ -19,9 +20,16 @@ export default function Blog() {
   }, []);
 
   const filtered = useMemo(() => {
-    if (activeTag === ALL_TAG) return blogPosts;
-    return blogPosts.filter((p) => p.tags.includes(activeTag));
-  }, [activeTag]);
+    const q = query.trim().toLowerCase();
+    return blogPosts.filter((p) => {
+      const matchesTag = activeTag === ALL_TAG || p.tags.includes(activeTag);
+      const matchesQuery =
+        !q ||
+        p.title.toLowerCase().includes(q) ||
+        p.summary.toLowerCase().includes(q);
+      return matchesTag && matchesQuery;
+    });
+  }, [activeTag, query]);
 
   return (
     <PageContainer className="px-6 sm:px-8 pt-32 md:pt-28 pb-20">
@@ -51,6 +59,23 @@ export default function Blog() {
           </a>
         </div>
 
+        {/* Search input */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="relative mb-4"
+        >
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+          <input
+            type="text"
+            placeholder="Buscar post..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm bg-muted/40 border border-border/60 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20 focus:border-border transition-all"
+          />
+        </motion.div>
+
         {/* Tag filter */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -77,7 +102,7 @@ export default function Blog() {
         {/* Posts grid */}
         {filtered.length === 0 ? (
           <p className="text-sm text-muted-foreground py-12 text-center">
-            Nenhum post encontrado para essa tag.
+            Nenhum post encontrado.
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
