@@ -1,4 +1,9 @@
 import type { BlogPost } from "./types";
+import capaImg from "../server-components/capa.jpg";
+import useeffectImg from "../server-components/useeffect.jpg";
+import waterfallImg from "../server-components/waterfall.jpg";
+import bundleImg from "../server-components/bundle.jpg";
+import hydrationImg from "../server-components/hydration.jpg";
 
 export const reactServerComponents: BlogPost = {
   slug: "por-que-voce-deveria-usar-react-server-components",
@@ -7,8 +12,8 @@ export const reactServerComponents: BlogPost = {
     "RSC mudaram completamente a forma como penso sobre renderização. Menos JavaScript no cliente, dados mais perto do servidor — e tudo sem sacrificar a experiência do usuário.",
   date: "2025-03-10",
   readTime: "5 min",
-  tags: ["React", "Next.js", "Performance"],
-  coverImage: "https://picsum.photos/seed/rsc-react/1200/630",
+  tags: ["React Server Components", "Performance", "App Router"],
+  coverImage: capaImg,
   linkedinUrl: "https://www.linkedin.com/in/guilhermesilvafernandes/",
   content: [
     {
@@ -53,10 +58,10 @@ async function UserProfile({ id }: { id: string }) {
     {
       type: "gallery",
       images: [
-        { src: "https://picsum.photos/seed/rsc-1/600/600", alt: "RSC — renderização no servidor" },
-        { src: "https://picsum.photos/seed/rsc-2/600/600", alt: "Fluxo de dados sem waterfall" },
-        { src: "https://picsum.photos/seed/rsc-3/600/600", alt: "Bundle size comparativo" },
-        { src: "https://picsum.photos/seed/rsc-4/600/600", alt: "Hydration seletiva" },
+        { src: useeffectImg, alt: "Sem useEffect — dados buscados direto no servidor" },
+        { src: waterfallImg, alt: "Zero waterfall — fetches em paralelo no servidor" },
+        { src: bundleImg, alt: "Bundle menor — dependências ficam no servidor" },
+        { src: hydrationImg, alt: "Hydration seletiva — só o que precisa hidrata" },
       ],
       caption: "Client Component vs Server Component — comparativo visual.",
     },
