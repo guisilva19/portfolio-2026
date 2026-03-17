@@ -58,7 +58,7 @@ export const certificates: CertificateItem[] = [
     issuer: "Kenzie Academy Brasil",
     date: "Mar 2023",
     skills: ["React", "Node.js", "JavaScript", "Python", "SQL"],
-    url: "#",
+    url: "https://drive.google.com/file/d/1UxFQfMo8JkrDsnMHmjO_ZQyuZQkjF3dM/view?usp=sharing",
     image: kenzieCert,
   },
   {
@@ -67,7 +67,7 @@ export const certificates: CertificateItem[] = [
     issuer: "UniFG Centro Universitário",
     date: "Dez 2025",
     skills: ["Estruturas de dados", "Algoritmos"],
-    url: "#",
+    url: "https://drive.google.com/file/d/1NuVn38Gets9rxry_-GLvV8JpxejTk6_d/view?usp=sharing",
     image: estruturasDadosCert,
   },
   {
@@ -76,7 +76,7 @@ export const certificates: CertificateItem[] = [
     issuer: "Alura",
     date: "Mar 2026",
     skills: ["Docker", "Containers"],
-    url: "#",
+    url: "https://cursos.alura.com.br/certificate/c30ab662-a479-469e-af11-4bbd47e6940c?lang=pt_BR",
     image: dockerCert,
   },
   {
@@ -94,7 +94,7 @@ export const certificates: CertificateItem[] = [
     issuer: "UniFG Centro Universitário",
     date: "Jul 2023",
     skills: ["Modelagem", "UML", "Engenharia de software"],
-    url: "#",
+    url: "https://drive.google.com/file/d/1qWu5OQFFVnuVK-cMCTY1V-NtftAinJ13/view?usp=sharing",
     image: modelagemCert,
   },
   {
@@ -103,7 +103,7 @@ export const certificates: CertificateItem[] = [
     issuer: "UniFG Centro Universitário",
     date: "Jul 2025",
     skills: ["Inteligência artificial", "Machine Learning"],
-    url: "#",
+    url: "https://drive.google.com/file/d/13aQmaL_JWQgvy_VnKYIr_iSU7hmYk1VR/view?usp=sharing",
     image: iaCert,
   },
   {
