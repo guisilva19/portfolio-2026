@@ -60,6 +60,7 @@ function renderSection(section: BlogSection, index: number) {
               src={section.src}
               alt={section.alt}
               fill
+              quality={100}
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 700px"
             />
@@ -98,6 +99,7 @@ function renderSection(section: BlogSection, index: number) {
                     src={img.src}
                     alt={img.alt}
                     fill
+                    quality={100}
                     className="object-cover"
                     sizes="(max-width: 768px) 50vw, 350px"
                   />
@@ -167,6 +169,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               alt={post.title}
               fill
               priority
+              quality={100}
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 700px"
             />
