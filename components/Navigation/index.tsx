@@ -9,6 +9,7 @@ const menuItems = [
   { name: "Experiência", path: "/experiencia" },
   { name: "Educação", path: "/educacao" },
   { name: "Projetos", path: "/projetos" },
+  { name: "Blog", path: "/blog" },
 ];
 
 export default function Navigation() {
