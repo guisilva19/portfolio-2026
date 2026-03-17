@@ -11,7 +11,7 @@ export const ssrSsgCsr: BlogPost = {
     "A escolha não é sobre framework. É sobre TTL dos dados, padrão de acesso, quem renderiza e quem paga o custo.",
   date: "2026-03-03",
   readTime: "5 min",
-  tags: ["Next.js", "React", "Frontend", "Performance", "SEO"],
+  tags: ["SEO", "SSR", "SSG", "CSR", "ISR"],
   coverImage: capaImg,
   linkedinUrl: "https://www.linkedin.com/posts/guilhermesilvafernandes_nextjs-react-frontend-activity-7432899774015492096-tGuX?utm_source=share&utm_medium=member_desktop&rcm=ACoAADnY0ysBaRAzCzIMNZApDeyb_G7vq__sxE0",
   content: [
